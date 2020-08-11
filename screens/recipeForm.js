@@ -1,20 +1,23 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Button, TextInput, View, Text} from 'react-native';
+import {StyleSheet, Button, TextInput, View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {globalStyles} from '../styles/global';
 import FlatButton from '../templates/button';
 import { RecipeContext } from '../context/RecipeProvider';
 
-export default function RecipeForm() {
+export default function RecipeForm({navigation}) {
     const recipe = useContext(RecipeContext);
     const { control, handleSubmit, errors } = useForm();
     const onSubmit = (data, e) => {
+        data.ingredients = data.ingredients.split(/, |\n|,/g);
+        data.directions = data.directions.split(/, |\n|,/g);
         recipe.addRecipe(data);
-        console.log(data);
-    }
+        navigation.navigate("Home");
+    }  
 
     return (
         <View style={globalStyles.container}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
                 <View style={styles.content}>
                     <Text style={styles.label}>Recipe Name</Text>
@@ -69,6 +72,7 @@ export default function RecipeForm() {
                     <FlatButton text="Submit" onPress={handleSubmit(onSubmit)} />
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         </View>
     )
 }
