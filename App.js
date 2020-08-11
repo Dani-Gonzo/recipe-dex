@@ -6,11 +6,14 @@ import HomeNavigator from './routes/homeStack';
 import DrawerNavigator from './routes/drawer';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {globalStyles} from './styles/global';
+import { RecipeProvider } from './context/RecipeProvider';
 
 export default function App() {
   return (
     <View style={globalStyles.container}>
-      <DrawerNavigator />
+      <RecipeProvider>
+        <DrawerNavigator />
+      </RecipeProvider>
     </View>
   );
 }

@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Button, TextInput, View, Text} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {globalStyles} from '../styles/global';
 import FlatButton from '../templates/button';
+import { RecipeContext } from '../context/RecipeProvider';
 
 export default function RecipeForm() {
+    const recipe = useContext(RecipeContext);
     const { control, handleSubmit, errors } = useForm();
-    const onSubmit = data => console.log(data);
+    const onSubmit = (data, e) => {
+        recipe.addRecipe(data);
+        console.log(data);
+    }
 
     return (
         <View style={globalStyles.container}>
@@ -24,7 +29,7 @@ export default function RecipeForm() {
                                 value={value}
                             />
                         )}
-                        name="recipeName"
+                        name="name"
                         defaultValue=""
                     />
 
