@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Button, TextInput, View, Text, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import {StyleSheet, Button, TextInput, View, Text, TouchableWithoutFeedback, Keyboard, ScrollView} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {globalStyles} from '../styles/global';
 import FlatButton from '../templates/button';
@@ -13,65 +13,67 @@ export default function RecipeForm({navigation}) {
         data.directions = data.directions.split(/, |\n|,/g);
         recipe.addRecipe(data);
         navigation.navigate("Home");
-    }  
+    }
 
     return (
         <View style={globalStyles.container}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.container}>
-                <View style={styles.content}>
-                    <Text style={styles.label}>Recipe Name</Text>
-                    <Controller 
-                        control={control}
-                        render={({onChange, onBlur, value}) => (
-                            <TextInput 
-                                style={styles.input}
-                                placeholder="Recipe name"
-                                onBlur={onBlur}
-                                onChangeText={value => onChange(value)}
-                                value={value}
+                <ScrollView>
+                    <View style={styles.container}>
+                        <View style={styles.content}>
+                            <Text style={styles.label}>Recipe Name</Text>
+                            <Controller 
+                                control={control}
+                                render={({onChange, onBlur, value}) => (
+                                    <TextInput 
+                                        style={styles.input}
+                                        placeholder="Recipe name"
+                                        onBlur={onBlur}
+                                        onChangeText={value => onChange(value)}
+                                        value={value}
+                                    />
+                                )}
+                                name="name"
+                                defaultValue=""
                             />
-                        )}
-                        name="name"
-                        defaultValue=""
-                    />
 
-                    <Text style={styles.label}>Ingredients</Text>
-                    <Controller 
-                        control={control}
-                        render={({onChange, onBlur, value}) => (
-                            <TextInput
-                                multiline
-                                style={styles.input}
-                                placeholder="Ingredients"
-                                onBlur={onBlur}
-                                onChangeText={value => onChange(value)}
-                                value={value}
+                            <Text style={styles.label}>Ingredients</Text>
+                            <Controller 
+                                control={control}
+                                render={({onChange, onBlur, value}) => (
+                                    <TextInput
+                                        multiline
+                                        style={styles.input}
+                                        placeholder="Ingredients"
+                                        onBlur={onBlur}
+                                        onChangeText={value => onChange(value)}
+                                        value={value}
+                                    />
+                                )}
+                                name="ingredients"
+                                defaultValue=""
                             />
-                        )}
-                        name="ingredients"
-                        defaultValue=""
-                    />
 
-                    <Text style={styles.label}>Directions</Text>
-                    <Controller 
-                        control={control}
-                        render={({onChange, onBlur, value}) => (
-                            <TextInput
-                                multiline
-                                style={styles.input}
-                                placeholder="Directions"
-                                onBlur={onBlur}
-                                onChangeText={value => onChange(value)}
-                                value={value}
+                            <Text style={styles.label}>Directions</Text>
+                            <Controller 
+                                control={control}
+                                render={({onChange, onBlur, value}) => (
+                                    <TextInput
+                                        multiline
+                                        style={styles.input}
+                                        placeholder="Directions"
+                                        onBlur={onBlur}
+                                        onChangeText={value => onChange(value)}
+                                        value={value}
+                                    />
+                                )}
+                                name="directions"
+                                defaultValue=""
                             />
-                        )}
-                        name="directions"
-                        defaultValue=""
-                    />
-                    <FlatButton text="Submit" onPress={handleSubmit(onSubmit)} />
-                </View>
-            </View>
+                            <FlatButton text="Submit" onPress={handleSubmit(onSubmit)} />
+                        </View>
+                    </View>
+                </ScrollView>
             </TouchableWithoutFeedback>
         </View>
     )
