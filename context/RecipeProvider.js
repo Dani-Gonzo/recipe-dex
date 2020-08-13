@@ -24,23 +24,32 @@ const RecipeProvider = (props) => {
 
     const addRecipe = (recipe, key) => {
         if (key) {
-            console.log(key);
             setRecipes((currentRecipes) => {
-                return currentRecipes[recipe.key - 1];
+                const recipeIndex = currentRecipes.findIndex((r) => r.key === key);
+                currentRecipes[recipeIndex] = {...currentRecipes[recipeIndex], ...recipe};
+                return [...currentRecipes];
+                // Below does same as above
+                // return currentRecipes.map((r) => r.key == key ? {...r, ...recipe} : r);
             });
         } else {
             recipe.key = (recipes.length + 1).toString();
             setRecipes((currentRecipes) => {
-                return [recipe, ...currentRecipes]
+                return [...currentRecipes, recipe]
             });
         }
+    }
+
+    const getRecipe = (key) => {
+        const recipeIndex = recipes.findIndex((r) => r.key === key);
+        return recipes[recipeIndex];
     }
 
     return (
         <RecipeContext.Provider
             value={{
                 recipes,
-                addRecipe
+                addRecipe,
+                getRecipe
             }}
         >
             {props.children}

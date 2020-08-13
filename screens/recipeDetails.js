@@ -25,7 +25,8 @@ export default function RecipeDetails({route, navigation}) {
                         )
                     })}
                 </View>
-                <FlatButton text="Edit" onPress={() => navigation.navigate("RecipeForm", key)} />
+                <Text>{key}</Text>
+                <FlatButton text="Edit" onPress={() => navigation.navigate("RecipeForm", {key})} />
             </Card>
         </View>
     )
