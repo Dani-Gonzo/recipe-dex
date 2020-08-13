@@ -4,12 +4,14 @@ import Card from '../templates/card';
 import {globalStyles} from '../styles/global';
 
 export default function RecipeDetails({route, navigation}) {
-    const {name, ingredients, directions} = route.params;
+    const {name, prepTime, cookTime, ingredients, directions} = route.params;
 
     return (
         <View style={globalStyles.container}>
             <Card>
                 <Text style={styles.recipeTitle}>{name}</Text>
+                <Text>Prep Time: {prepTime}</Text>
+                <Text>Cook Time: {cookTime}</Text>
                 {ingredients.map((ingredient) => {
                     return (
                         <Text>{`\u2022 ` + ingredient}</Text>
