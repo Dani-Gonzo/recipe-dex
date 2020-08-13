@@ -2,9 +2,10 @@ import React from 'react';
 import {StyleSheet, View, Text, Image, Button} from 'react-native';
 import Card from '../templates/card';
 import {globalStyles} from '../styles/global';
+import FlatButton from '../templates/button';
 
 export default function RecipeDetails({route, navigation}) {
-    const {name, prepTime, cookTime, ingredients, directions} = route.params;
+    const {name, prepTime, cookTime, ingredients, directions, key} = route.params;
 
     return (
         <View style={globalStyles.container}>
@@ -24,7 +25,7 @@ export default function RecipeDetails({route, navigation}) {
                         )
                     })}
                 </View>
-                
+                <FlatButton text="Edit" onPress={() => navigation.navigate("RecipeForm", key)} />
             </Card>
         </View>
     )

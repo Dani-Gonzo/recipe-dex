@@ -5,13 +5,13 @@ import {globalStyles} from '../styles/global';
 import FlatButton from '../templates/button';
 import { RecipeContext } from '../context/RecipeProvider';
 
-export default function RecipeForm({navigation}) {
+export default function RecipeForm({navigation}, key) {
     const recipe = useContext(RecipeContext);
     const { control, handleSubmit, errors } = useForm();
     const onSubmit = (data, e) => {
         data.ingredients = data.ingredients.split(/, |\n|,/g);
         data.directions = data.directions.split(/, |\n|,/g);
-        recipe.addRecipe(data);
+        recipe.addRecipe(data, key);
         navigation.navigate("Home");
     }
 

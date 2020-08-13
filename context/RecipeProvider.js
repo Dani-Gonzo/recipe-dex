@@ -22,12 +22,18 @@ const RecipeProvider = (props) => {
         }
     ]);
 
-    const addRecipe = (recipe) => {
-        recipe.key = (recipes.length + 1).toString();
-        console.log(recipe.key);
-        setRecipes((currentRecipes) => {
-            return [recipe, ...currentRecipes]
-        });
+    const addRecipe = (recipe, key) => {
+        if (key) {
+            console.log(key);
+            setRecipes((currentRecipes) => {
+                return currentRecipes[recipe.key - 1];
+            });
+        } else {
+            recipe.key = (recipes.length + 1).toString();
+            setRecipes((currentRecipes) => {
+                return [recipe, ...currentRecipes]
+            });
+        }
     }
 
     return (
