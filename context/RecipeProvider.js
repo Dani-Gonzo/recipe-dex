@@ -39,6 +39,14 @@ const RecipeProvider = (props) => {
         }
     }
 
+    const removeRecipe = (key) => {
+        setRecipes((currentRecipes) => {
+            const recipeIndex = currentRecipes.findIndex((r) => r.key === key);
+            currentRecipes.splice(recipeIndex, 1);
+            return [...currentRecipes];
+        })
+    }
+
     const getRecipe = (key) => {
         const recipeIndex = recipes.findIndex((r) => r.key === key);
         return recipes[recipeIndex];
@@ -49,6 +57,7 @@ const RecipeProvider = (props) => {
             value={{
                 recipes,
                 addRecipe,
+                removeRecipe,
                 getRecipe
             }}
         >
