@@ -8,7 +8,6 @@ import RecipeList from '../screens/recipeList';
 import RecipeDetails from '../screens/recipeDetails';
 import RecipeForm from '../screens/recipeForm';
 import Header from '../templates/header';
-import About from '../screens/about';
 
 const Stack = createStackNavigator();
 
