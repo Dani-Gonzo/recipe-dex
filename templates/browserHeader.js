@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-export default function BrowserHeader({navigation, title}) {
+export default function BrowserHeader({navigation, title, onDownload}) {
     const openAddRecipe = () => {
         navigation.navigate("RecipeForm");
     }
@@ -11,7 +11,7 @@ export default function BrowserHeader({navigation, title}) {
             <View style={styles.headerTitle}>
                 <Text style={styles.headerText}>{title}</Text>
             </View>
-            <Text onPress={openAddRecipe} style={styles.download}>Download</Text>
+            <Text onPress={onDownload} style={styles.download}>Download</Text>
         </View>
     );
 }

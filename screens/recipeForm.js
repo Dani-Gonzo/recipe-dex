@@ -6,13 +6,15 @@ import FlatButton from '../templates/button';
 import { RecipeContext } from '../context/RecipeProvider';
 
 export default function RecipeForm({navigation, route}) {
-    const {key} = route.params || {};
+    const {key, download} = route.params || {};
     const recipe = useContext(RecipeContext);
-    const thisRecipe = key ? {...(recipe.getRecipe(key))} : {};
+    const thisRecipe = key ? {...(recipe.getRecipe(key))} : (download || {});
     if (key) {
         thisRecipe.ingredients = thisRecipe.ingredients.join('\n');
         thisRecipe.directions = thisRecipe.directions.join('\n');
     }
+
+    console.log(route.params);
 
     const { control, handleSubmit, errors } = useForm({ defaultValues: thisRecipe});
     const onSubmit = (data, e) => {
