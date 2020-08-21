@@ -9,8 +9,8 @@ export default function Browser({navigation}) {
     webview = null;
 
     const scraper = () => {
-        console.log(webScraper);
-        const recipeScraper = webScraper + ';window.ReactNativeWebView.postMessage(JSON.stringify({ingredients}));';
+        // console.log(webScraper);
+        const recipeScraper = webScraper;
         webview.injectJavaScript(recipeScraper);
     }
 
@@ -18,7 +18,7 @@ export default function Browser({navigation}) {
         webData = event.nativeEvent.data;
         webData = JSON.parse(webData);
         data = {
-            name: "webData.name",
+            name: webData.name,
             prepTime: "webData.prepTime",
             cookTime: "webData.cookTime",
             ingredients: webData.ingredients,

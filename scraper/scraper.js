@@ -1,4 +1,45 @@
-export default "let ingreRoot = null;" +
+export default 
+"let name = '';" +
+"{" +
+	"let nameRoot = null;" +
+	"const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);" +
+	"let currentNode = walker.nextNode();" +
+	"let candidateNodes = [];" +
+	"while (currentNode) {" +
+		// is this node a possibility
+		"const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();" +
+		"let attr = currentNode.attributes.getNamedItem('itemprop');" +
+		"let match = className.includes('recipe-');" +
+		"match = match || (attr ? attr.value : '').toLowerCase() == 'name';" +
+		"match = match || className.includes('assettitle');" +
+		"match = match || className.includes('headline-');" +
+		"match = match || className.includes('title-');" +
+		"match = match || className.includes('recipeparttitle');" +
+		"match = match || className.includes('headline');" +
+		"if (match) {" +
+			"candidateNodes.push(currentNode);" +
+		"}" +
+		"currentNode = walker.nextNode();" +
+	"}" +
+	// look for relevant elements
+	
+	"nameRoot = candidateNodes.find(e => e.nodeName.toLowerCase() == 'h1');" +
+	"nameRoot = nameRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('-title'));" +
+	"nameRoot = nameRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('-wrapper'));" +
+	"nameRoot = nameRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div');" +
+	"const itemWalker = document.createTreeWalker(nameRoot, NodeFilter.SHOW_TEXT);" +
+	"currentNode = itemWalker.currentNode;" +
+	"while(currentNode) {" +
+		"if(currentNode.length > 0) {" +
+			"name += currentNode.data.toString().trim();" +
+		"}" +
+		"currentNode = itemWalker.nextNode();" +
+	"}" +
+"}" +
+
+
+
+"let ingreRoot = null;" +
 "{" + 
 	"const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);" + 
 	"let currentNode = walker.currentNode;" + 
@@ -73,4 +114,15 @@ export default "let ingreRoot = null;" +
 			"ingredients += text.trim() + '\\n';" +
 		"}" +
 	"}" +
-"}";
+"}" +
+
+"let recipeObject = {" +
+	"name," +
+	"ingredients" +
+"};" +
+
+"if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){ " +
+	"window.ReactNativeWebView = { postMessage: console.log };" +
+"}" +
+
+"window.ReactNativeWebView.postMessage(JSON.stringify(recipeObject));";
