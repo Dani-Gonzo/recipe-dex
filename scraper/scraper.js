@@ -114,8 +114,6 @@ export default
 	"}" +
 "}" +
 
-
-
 // search for directions container
 "let directionRoot = null;" +
 "{" +
@@ -178,18 +176,15 @@ export default
 				"}" +
 				"currentNode = itemWalker.nextNode();" +
 			"}" +
-			"directions += text.trim() + '\n';" +
+			"directions += text.trim() + '\\n';" +
 		"}" +
 	"}" +
 "}" +
 
-
-
-
 "let recipeObject = {" +
 	"name," +
 	"ingredients," +
-	"directions"
+	"directions" +
 "};" +
 
 "if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){ " +

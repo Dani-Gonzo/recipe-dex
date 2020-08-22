@@ -22,7 +22,7 @@ export default function Browser({navigation}) {
             prepTime: "webData.prepTime",
             cookTime: "webData.cookTime",
             ingredients: webData.ingredients,
-            directions: "webData.directions"
+            directions: webData.directions
         }
         console.log(event.nativeEvent.data);
         navigation.navigate("RecipeForm", {download: data});
