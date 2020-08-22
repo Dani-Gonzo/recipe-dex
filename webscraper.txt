@@ -1,21 +1,33 @@
-name = document.querySelector("h1.headline").innerText;
-prepTime = document.querySelector(".recipe-meta-item").firstElementChild.nextElementSibling.innerText
 cookTime = document.querySelector(".recipe-meta-item").nextElementSibling.firstElementChild.nextElementSibling.innerText
 
+prepTime = document.querySelector(".recipe-meta-item").firstElementChild.nextElementSibling.innerText
+yummly - only has total time
+food.com - only has total time
+epicurious - does not have times
+tasty - does not have times
 
-pioneer woman, delish - content-hed, recipe-hed
-food.com, yummly - recipe-title
-allrecipes - recipe-summary
-food network - assetTitle
-epicurious - title-source (iffy)
-betty crocker - recipePartTitle
-eating well - headline-wrapper
-tasty - recipe-name
+pioneer woman, delish - span. prep-time-amount
+allrecipes - time element. itemprop=prepTime
+food network - has active and total. active: ul. o-RecipeInfo__m-Time (not include --Total)
+betty crocker - has prep and total. prep: li. _prep_
+eating well - has active and total. active: div. recipe-meta-item. first element. second is total time, has same class
 
-consolidation: recipe-, assetTitle, headline-, title-, recipe
+consolidation: 
+---------------------------
+pioneer woman, delish - div directions-body. div directions-lists. ol inside
+allrecipes - div directions--section. ol recipe-directions. li step
+food network - div m-Body. ol inside. li m_Step
+betty crocker - ul recipePartStepsList. li recipePartStep
+eating well - ul instructions-section. li instructions-section-item
+tasty - ol prep-steps
+yummly - ol List. li prep-step
+food.com - ul recipe-directions__steps. li recipe-directions__step
+epicurious - ol preparation-steps. li preparation-step
+
+consolidation: m-Body, StepsList, instructions-, -steps, list, directions
 
 // search for name container
-let name = "";
+let name = '';
 {
 	let nameRoot = null;
 	const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
@@ -23,10 +35,10 @@ let name = "";
 	let candidateNodes = [];
 	while (currentNode) {
 		// is this node a possibility
-		const className = (typeof(currentNode.className) == 'string' ? currentNode.className : "").toLowerCase();
+		const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();
 		let attr = currentNode.attributes.getNamedItem('itemprop');
 		let match = className.includes('recipe-');
-		match = match || (attr ? attr.value : "").toLowerCase() == 'name';
+		match = match || (attr ? attr.value : '').toLowerCase() == 'name';
 		match = match || className.includes('assettitle');
 		match = match || className.includes('headline-');
 		match = match || className.includes('title-');
@@ -53,6 +65,7 @@ let name = "";
 	}
 }
 
+
 // search for ingredient container
 let ingreRoot = null;
 {
@@ -62,7 +75,7 @@ let ingreRoot = null;
 	while( currentNode ) {
 		// am I of interest
 		if( currentNode.nodeName.toLowerCase() != 'input' && 
-			(typeof(currentNode.className) == 'string' ? currentNode.className : "").toLowerCase().includes('ingredients') ) {
+			(typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase().includes('ingredients') ) {
 			candidateNodes.push(currentNode);
 		}
 		currentNode = walker.nextNode();
@@ -90,7 +103,7 @@ let ingreRoot = null;
 		ingreRoot = [];
 	}
 }
-let ingredients = "";
+let ingredients = '';
 if( ingreRoot.length > 0 ) {
 	const ingredientRegExp = /ingredient[^s]{1}|ingredient$/;
 	for(const root of ingreRoot) {
@@ -102,7 +115,7 @@ if( ingreRoot.length > 0 ) {
 			// am I of interest
 			const nodeName = currentNode.nodeName.toLowerCase();
 			if( nodeName == 'div' || nodeName == 'p' || nodeName == 'li' ) {
-				const className = (typeof(currentNode.className) == 'string' ? currentNode.className : "").toLowerCase()
+				const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();
 				let isMatch = className.includes('item');
 				isMatch = isMatch || className.includes('line');
 				isMatch = isMatch || ingredientRegExp.test(className);
@@ -115,12 +128,12 @@ if( ingreRoot.length > 0 ) {
 		}
 		
 		for(let item of candidateNodes) {
-			let text = "";
+			let text = '';
 			const itemWalker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
 			currentNode = itemWalker.currentNode;
 			while(currentNode) {
 				if(currentNode.length > 0) {
-					text += currentNode.data.toString().trim() + " ";
+					text += currentNode.data.toString().trim() + ' ';
 				}
 				currentNode = itemWalker.nextNode();
 			}
@@ -129,10 +142,79 @@ if( ingreRoot.length > 0 ) {
 	}
 }
 
+
+// search for directions container
+let directionRoot = null;
+{
+	const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
+	let currentNode = walker.currentNode;
+	let candidateNodes = [];
+	while( currentNode ) {
+		// am I of interest
+		if( currentNode.nodeName.toLowerCase() != 'input' && 
+			(typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase()) {
+			candidateNodes.push(currentNode);
+		}
+		currentNode = walker.nextNode();
+	}
+	// look for elements in certain order
+	directionRoot = candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol' && e.className.toLowerCase().includes('-directions'));
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('instructions') );
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('directions') );
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('steps') );
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol' && e.className.toLowerCase().includes('steps') );
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol' && e.className.toLowerCase().includes('list') );
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol');
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'section' && e.className.toLowerCase().includes('method'));
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('directions-list'));
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('directions'));
+	directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('m-body'));
+	directionRoot = directionRoot || candidateNodes[0];
+	directionRoot = directionRoot ? [directionRoot] : [];
+}
+let directions = '';
+if( directionRoot.length > 0 ) {
+	for(const root of directionRoot) {
+		// try to find and consolidate items
+		const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+		let currentNode = walker.nextNode();
+		let candidateNodes = [];
+		while( currentNode ) {
+			// am I of interest
+			const nodeName = currentNode.nodeName.toLowerCase();
+			if( nodeName == 'div' || nodeName == 'li' || nodeName == 'p') {
+				const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();
+				let isMatch = className.includes('step');
+				isMatch = isMatch || className.includes('mb2');
+				isMatch = isMatch || className.includes('paragraph');
+				isMatch = isMatch || nodeName == 'li';
+
+				if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {
+					candidateNodes.push(currentNode);
+				}
+			}
+			currentNode = walker.nextNode();
+		}
+		for(let item of candidateNodes) {
+			let text = '';
+			const itemWalker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);
+			currentNode = itemWalker.currentNode;
+			while(currentNode) {
+				if(currentNode.length > 0) {
+					text += currentNode.data.toString().trim() + ' ';
+				}
+				currentNode = itemWalker.nextNode();
+			}
+			directions += text.trim() + '\n'; 
+		}
+	}
+}
+
 let recipeObject = {
 	name,
-	ingredients
-}
+	ingredients,
+	directions
+};
 
 if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){ 
 	window.ReactNativeWebView = { postMessage: console.log }; 

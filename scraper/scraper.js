@@ -74,9 +74,8 @@ export default
 	"} else {" +
 		"ingreRoot = [];" +
 	"}" +
-	"console.log(ingreRoot);" +
 "}" +
-"ingredients = '';" +
+"let ingredients = '';" +
 "if( ingreRoot.length > 0 ) {" +
 	"const ingredientRegExp = /ingredient[^s]{1}|ingredient$/;" +
 	"for(const root of ingreRoot) {" +
@@ -94,7 +93,6 @@ export default
 				"isMatch = isMatch || ingredientRegExp.test(className);" +
 
 				"if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {" +
-				"console.log(currentNode);" +
 					"candidateNodes.push(currentNode);" +
 				"}" +
 			"}" +
@@ -116,9 +114,82 @@ export default
 	"}" +
 "}" +
 
+
+
+// search for directions container
+"let directionRoot = null;" +
+"{" +
+	"const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);" +
+	"let currentNode = walker.currentNode;" +
+	"let candidateNodes = [];" +
+	"while( currentNode ) {" +
+		// am I of interest
+		"if( currentNode.nodeName.toLowerCase() != 'input' && " +
+			"(typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase()) {" +
+			"candidateNodes.push(currentNode);" +
+		"}" +
+		"currentNode = walker.nextNode();" +
+	"}" +
+	// look for elements in certain order
+	"directionRoot = candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol' && e.className.toLowerCase().includes('-directions'));" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('instructions') );" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('directions') );" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('steps') );" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol' && e.className.toLowerCase().includes('steps') );" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol' && e.className.toLowerCase().includes('list') );" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ol');" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'section' && e.className.toLowerCase().includes('method'));" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('directions-list'));" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('directions'));" +
+	"directionRoot = directionRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('m-body'));" +
+	"directionRoot = directionRoot || candidateNodes[0];" +
+	"directionRoot = directionRoot ? [directionRoot] : [];" +
+"}" +
+"let directions = '';" +
+"if( directionRoot.length > 0 ) {" +
+	"for(const root of directionRoot) {" +
+		// try to find and consolidate items
+		"const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);" +
+		"let currentNode = walker.nextNode();" +
+		"let candidateNodes = [];" +
+		"while( currentNode ) {" +
+			// am I of interest
+			"const nodeName = currentNode.nodeName.toLowerCase();" +
+			"if( nodeName == 'div' || nodeName == 'li' || nodeName == 'p') {" +
+				"const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();" +
+				"let isMatch = className.includes('step');" +
+				"isMatch = isMatch || className.includes('mb2');" +
+				"isMatch = isMatch || className.includes('paragraph');" +
+				"isMatch = isMatch || nodeName == 'li';" +
+
+				"if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {" +
+					"candidateNodes.push(currentNode);" +
+				"}" +
+			"}" +
+			"currentNode = walker.nextNode();" +
+		"}" +
+		"for(let item of candidateNodes) {" +
+			"let text = '';" +
+			"const itemWalker = document.createTreeWalker(item, NodeFilter.SHOW_TEXT);" +
+			"currentNode = itemWalker.currentNode;" +
+			"while(currentNode) {" +
+				"if(currentNode.length > 0) {" +
+					"text += currentNode.data.toString().trim() + ' ';" +
+				"}" +
+				"currentNode = itemWalker.nextNode();" +
+			"}" +
+			"directions += text.trim() + '\n';" +
+		"}" +
+	"}" +
+"}" +
+
+
+
+
 "let recipeObject = {" +
 	"name," +
-	"ingredients" +
+	"ingredients," +
+	"directions"
 "};" +
 
 "if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){ " +
