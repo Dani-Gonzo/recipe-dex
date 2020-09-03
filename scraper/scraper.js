@@ -95,7 +95,7 @@ export default
 				"class: 'recipe-meta-item'," +
 				"exclude: ['body', 'header']" +
 			"}" +
-		"]" +
+		"];" +
 			
 		"while (currentNode) {" +
 			// am I of interest
@@ -143,7 +143,7 @@ export default
 			"return result.trim();" +
 		"}" +
 
-		"const timeRegex = /[0-9]+\s*(min|hour|hr|m)/;" +
+		"const timeRegex = /[0-9]+\\s*(min|hour|hr|m)/;" +
 		
 		"for (let perItem of candidateNodes) {" +
 			"const itemDesc = {" +

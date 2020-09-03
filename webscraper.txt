@@ -1,30 +1,30 @@
-recipeTimes
-yummly - only has total time
-food.com - only has total time
-epicurious - does not have times
-tasty - does not have times
-pioneer woman - has prep, cook, total
-delish - has prep and total
-allrecipes - has prep, cook, total
-food network - has prep and total
-betty crocker - has prep and total
-eating well - has prep and total
+// recipeTimes
+// yummly - only has total time
+// food.com - only has total time
+// epicurious - does not have times
+// tasty - does not have times
+// pioneer woman - has prep, cook, total
+// delish - has prep and total
+// allrecipes - has prep, cook, total
+// food network - has prep and total
+// betty crocker - has prep and total
+// eating well - has prep and total
 
-yummly - div. class "recipe-summary-item unity h2-text". two spans inside. first span class value, second span class unit
-eating well - div. class "two-subcol-content-wrapper". 3 divs inside. all class "recipe-meta-item". 1st div active time. contains two divs, one with time label one with time 		duration. "recipe-meta-item-header" "recipe-meta-item-body". last div contains serving size. no differentiating factor.
-betty crocker - div. class "recipePartAttributes recipePartPrimaryAttributes". ul inside. three li inside. 1st is prep. id "gmi_rp_primaryAttributes_prep_". three spans inside. 	classes "attributeName", "attributeValue", "attributeValueLabel".
-	2nd is total. id "gmi_rp_primaryAttributes_total". has 5 spans inside, same classes.
-	3rd has servings.
-pioneer woman - div. class "recipe-details-container". 4 divs inside. 1st is servings. 2nd prep. div class "recipe-details-item prep-time". "recipe-details-item cook-time". 		"recipe-details-item total-time"
-food network - ul "RecipeInfo", then "Time"
-delish - "recipe-details-container". "recipe-details-item prep-time". "recipe-details-item total-time"
-food.com = "recipe-facts", then "time"
-allrecipes = "prepTime". "item"
+// yummly - div. class "recipe-summary-item unity h2-text". two spans inside. first span class value, second span class unit
+// eating well - div. class "two-subcol-content-wrapper". 3 divs inside. all class "recipe-meta-item". 1st div active time. contains two divs, one with time label one with time 		duration. "recipe-meta-item-header" "recipe-meta-item-body". last div contains serving size. no differentiating factor.
+// betty crocker - div. class "recipePartAttributes recipePartPrimaryAttributes". ul inside. three li inside. 1st is prep. id "gmi_rp_primaryAttributes_prep_". three spans inside. 	classes "attributeName", "attributeValue", "attributeValueLabel".
+// 	2nd is total. id "gmi_rp_primaryAttributes_total". has 5 spans inside, same classes.
+// 	3rd has servings.
+// pioneer woman - div. class "recipe-details-container". 4 divs inside. 1st is servings. 2nd prep. div class "recipe-details-item prep-time". "recipe-details-item cook-time". 		"recipe-details-item total-time"
+// food network - ul "RecipeInfo", then "Time"
+// delish - "recipe-details-container". "recipe-details-item prep-time". "recipe-details-item total-time"
+// food.com = "recipe-facts", then "time"
+// allrecipes = "prepTime". "item"
 
 
-consolidation 
-containers: recipe, recipe-summary-item, content-wrapper, recipepart, recipe-details, recipeinfo, recipe-facts, preptime
----------------------------
+// consolidation 
+// containers: recipe, recipe-summary-item, content-wrapper, recipepart, recipe-details, recipeinfo, recipe-facts, preptime
+// ---------------------------
 
 
 // search for name container
@@ -69,8 +69,8 @@ let name = '';
 // search for times container
 let prepTime = '';
 let cookTime = '';
+let itemDescList = [];
 {
-	
 	const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
 	let currentNode = walker.currentNode;
 	let candidateNodes = [];
@@ -87,8 +87,6 @@ let cookTime = '';
 		}
 		currentNode = walker.nextNode();
 	}
-	console.log("firstPass:");
-	console.log(candidateNodes);
 	
 	// look for relevant elements
 	let timesRoot = null;
@@ -100,14 +98,11 @@ let cookTime = '';
 	timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('time')); // for food network
 	timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div');
 
-	// console.log("timeRoot:");
-	// console.log(timesRoot);
 	if (timesRoot) {
 		// get items
 		candidateNodes = [];
 		const itemWalker = document.createTreeWalker(timesRoot, NodeFilter.SHOW_ELEMENT);
 		currentNode = itemWalker.currentNode;
-		// console.log(currentNode);
 			
 		// if ul has un-classified li children, assume that's what we want
 		if (currentNode && currentNode.nodeName.toLowerCase() == 'ul') {
@@ -118,9 +113,6 @@ let cookTime = '';
 			}
 			currentNode = candidateNodes.length > 0 ? null : currentNode;
 		}
-		// console.log("secondPass:");
-		// console.log(candidateNodes);
-	// console.log(currentNode);
 		// move past the parent
 		currentNode = currentNode != null ? itemWalker.nextNode() : null;
 		
@@ -130,7 +122,7 @@ let cookTime = '';
 				class: 'recipe-meta-item',
 				exclude: ['body', 'header']
 			}
-		]
+		];
 			
 		while (currentNode) {
 			// am I of interest
@@ -156,7 +148,6 @@ let cookTime = '';
 						}
 						return false;
 					}));
-					
 				}
 			}
 
@@ -180,11 +171,7 @@ let cookTime = '';
 		}
 
 		const timeRegex = /[0-9]+\s*(min|hour|hr|m)/;
-		let itemDescList = [];
-		
-		console.log('candidates:');
-		console.log(candidateNodes);
-		
+
 		for (let perItem of candidateNodes) {
 			const itemDesc = {
 				label: '',
@@ -194,18 +181,11 @@ let cookTime = '';
 			const perItemWalker = document.createTreeWalker(perItem, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
 			// handle key and label assignment
 			let atNode = perItemWalker.nextNode();
-			console.log('first item:');
-			console.log(atNode);
 			while (atNode.nodeType == Node.TEXT_NODE && atNode.data.toString().trim() == '') {
 				atNode = perItemWalker.nextNode();
-				console.log('in while:');
-				console.log(atNode);
 			}
 			itemDesc.label = collectText(atNode);
-			console.log(itemDesc.label);
 			atNode = perItemWalker.nextSibling();
-			console.log('second item:');
-			console.log(atNode);
 			while (atNode) {
 				itemDesc.value += collectText(atNode) + ' ';
 				atNode = perItemWalker.nextSibling();
@@ -223,7 +203,6 @@ let cookTime = '';
 				}
 				itemDescList.push(itemDesc);
 			}
-			console.log(itemTime);
 		}
 		
 
