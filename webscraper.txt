@@ -1,30 +1,31 @@
-cookTime = document.querySelector(".recipe-meta-item").nextElementSibling.firstElementChild.nextElementSibling.innerText
-
-prepTime = document.querySelector(".recipe-meta-item").firstElementChild.nextElementSibling.innerText
+recipeTimes
 yummly - only has total time
 food.com - only has total time
 epicurious - does not have times
 tasty - does not have times
+pioneer woman - has prep, cook, total
+delish - has prep and total
+allrecipes - has prep, cook, total
+food network - has prep and total
+betty crocker - has prep and total
+eating well - has prep and total
 
-pioneer woman, delish - span. prep-time-amount
-allrecipes - time element. itemprop=prepTime
-food network - has active and total. active: ul. o-RecipeInfo__m-Time (not include --Total)
-betty crocker - has prep and total. prep: li. _prep_
-eating well - has active and total. active: div. recipe-meta-item. first element. second is total time, has same class
+yummly - div. class "recipe-summary-item unity h2-text". two spans inside. first span class value, second span class unit
+eating well - div. class "two-subcol-content-wrapper". 3 divs inside. all class "recipe-meta-item". 1st div active time. contains two divs, one with time label one with time 		duration. "recipe-meta-item-header" "recipe-meta-item-body". last div contains serving size. no differentiating factor.
+betty crocker - div. class "recipePartAttributes recipePartPrimaryAttributes". ul inside. three li inside. 1st is prep. id "gmi_rp_primaryAttributes_prep_". three spans inside. 	classes "attributeName", "attributeValue", "attributeValueLabel".
+	2nd is total. id "gmi_rp_primaryAttributes_total". has 5 spans inside, same classes.
+	3rd has servings.
+pioneer woman - div. class "recipe-details-container". 4 divs inside. 1st is servings. 2nd prep. div class "recipe-details-item prep-time". "recipe-details-item cook-time". 		"recipe-details-item total-time"
+food network - ul "RecipeInfo", then "Time"
+delish - "recipe-details-container". "recipe-details-item prep-time". "recipe-details-item total-time"
+food.com = "recipe-facts", then "time"
+allrecipes = "prepTime". "item"
 
-consolidation: 
+
+consolidation 
+containers: recipe, recipe-summary-item, content-wrapper, recipepart, recipe-details, recipeinfo, recipe-facts, preptime
 ---------------------------
-pioneer woman, delish - div directions-body. div directions-lists. ol inside
-allrecipes - div directions--section. ol recipe-directions. li step
-food network - div m-Body. ol inside. li m_Step
-betty crocker - ul recipePartStepsList. li recipePartStep
-eating well - ul instructions-section. li instructions-section-item
-tasty - ol prep-steps
-yummly - ol List. li prep-step
-food.com - ul recipe-directions__steps. li recipe-directions__step
-epicurious - ol preparation-steps. li preparation-step
 
-consolidation: m-Body, StepsList, instructions-, -steps, list, directions
 
 // search for name container
 let name = '';
@@ -65,6 +66,177 @@ let name = '';
 	}
 }
 
+// search for times container
+let prepTime = '';
+let cookTime = '';
+{
+	
+	const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
+	let currentNode = walker.currentNode;
+	let candidateNodes = [];
+	while (currentNode) {
+		// am I of interest
+		const classNames = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase().split(' ');
+		// break up the class attribute
+		let match = classNames.some(n => {
+			return (n.includes('recipe') && n.includes('attributes')) || (n.includes('recipe') && (n.includes('detail') || n.includes('info'))) || n.includes('content-wrapper') || n.includes('preptime');
+		});
+
+		if (match) {
+			candidateNodes.push(currentNode);
+		}
+		currentNode = walker.nextNode();
+	}
+	console.log("firstPass:");
+	console.log(candidateNodes);
+	
+	// look for relevant elements
+	let timesRoot = null;
+	// timesRoot = candidateNodes.find(e => e.nodeName.toLowerCase() == 'span');
+	// timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'p');
+	timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('part')); // for bettycrocker
+	timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('container')); // for pioneer woman
+	timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('facts')); // for food.com
+	timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul' && e.className.toLowerCase().includes('time')); // for food network
+	timesRoot = timesRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div');
+
+	// console.log("timeRoot:");
+	// console.log(timesRoot);
+	if (timesRoot) {
+		// get items
+		candidateNodes = [];
+		const itemWalker = document.createTreeWalker(timesRoot, NodeFilter.SHOW_ELEMENT);
+		currentNode = itemWalker.currentNode;
+		// console.log(currentNode);
+			
+		// if ul has un-classified li children, assume that's what we want
+		if (currentNode && currentNode.nodeName.toLowerCase() == 'ul') {
+			for (let i of currentNode.childNodes) {
+				if (i.nodeType == Node.ELEMENT_NODE && i.className === '') {
+					candidateNodes.push(i);
+				}
+			}
+			currentNode = candidateNodes.length > 0 ? null : currentNode;
+		}
+		// console.log("secondPass:");
+		// console.log(candidateNodes);
+	// console.log(currentNode);
+		// move past the parent
+		currentNode = currentNode != null ? itemWalker.nextNode() : null;
+		
+		const acceptableNodeNames = ['li', 'div'];
+		const rulesCheck = [
+			{
+				class: 'recipe-meta-item',
+				exclude: ['body', 'header']
+			}
+		]
+			
+		while (currentNode) {
+			// am I of interest
+			const nodeName = currentNode.nodeName.toLowerCase();
+			let match = acceptableNodeNames.includes(nodeName);
+			// break up class attribute
+			const classNames = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase().split(' ');
+			if (typeof(currentNode.id) == 'string') {
+				idNode = currentNode.id.toLowerCase();
+				classNames.push(idNode);
+			}
+			match = match && classNames.some(n => {
+				return (n.includes('recipe') && (n.includes('item')) || (n.includes('facts'))) || (!n.includes('recipe') && (n.includes('time') || n.includes('primaryattributes')));
+			});
+
+			for (let i of rulesCheck) {
+				if (classNames.some(k => k.includes(i.class))) {
+					match = match && (!classNames.some(n => {
+						for (let j of i.exclude) {
+							if (n.includes(j)) {
+								return true;
+							}
+						}
+						return false;
+					}));
+					
+				}
+			}
+
+			if (match) {
+				candidateNodes.push(currentNode);
+			}
+			currentNode = itemWalker.nextNode();
+		}
+
+		function collectText(node) {
+			const textWalker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+			let result = '';
+			let currentNode = textWalker.currentNode;
+			while (currentNode) {
+				if (currentNode.length > 0) {
+					result += currentNode.data.toString().trim() + ' ';
+				}
+				currentNode = textWalker.nextNode();
+			}
+			return result.trim();
+		}
+
+		const timeRegex = /[0-9]+\s*(min|hour|hr|m)/;
+		let itemDescList = [];
+		
+		console.log('candidates:');
+		console.log(candidateNodes);
+		
+		for (let perItem of candidateNodes) {
+			const itemDesc = {
+				label: '',
+				value: ''
+			};
+
+			const perItemWalker = document.createTreeWalker(perItem, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+			// handle key and label assignment
+			let atNode = perItemWalker.nextNode();
+			console.log('first item:');
+			console.log(atNode);
+			while (atNode.nodeType == Node.TEXT_NODE && atNode.data.toString().trim() == '') {
+				atNode = perItemWalker.nextNode();
+				console.log('in while:');
+				console.log(atNode);
+			}
+			itemDesc.label = collectText(atNode);
+			console.log(itemDesc.label);
+			atNode = perItemWalker.nextSibling();
+			console.log('second item:');
+			console.log(atNode);
+			while (atNode) {
+				itemDesc.value += collectText(atNode) + ' ';
+				atNode = perItemWalker.nextSibling();
+			}
+
+			const itemTime = itemDesc.value.toLowerCase().trim();
+			if (itemTime.includes('min') || itemTime.includes('hour') || itemTime.includes('hr') || itemTime.endsWith('m')) {
+				if (!timeRegex.test(itemTime)) {
+					itemDesc.value = `${itemDesc.label} ${itemDesc.value}`;
+					// TODO: DO NOT assume the time is cook
+					itemDesc.label = 'total';
+				}
+				if (itemDesc.label.toLowerCase().includes('ready in')) {
+					itemDesc.label = "Total";
+				}
+				itemDescList.push(itemDesc);
+			}
+			console.log(itemTime);
+		}
+		
+
+		for (let time of itemDescList) {
+			if (time.label.toLowerCase().includes('prep')) {
+				prepTime = time.value;
+			} else if (time.label.toLowerCase().includes('cook')) {
+				cookTime = time.value;
+			} 
+		}
+		console.log(JSON.stringify(itemDescList));
+	}
+}
 
 // search for ingredient container
 let ingreRoot = null;
