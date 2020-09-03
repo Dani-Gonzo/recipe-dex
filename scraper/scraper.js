@@ -174,6 +174,9 @@ export default
 				"if (itemDesc.label.toLowerCase().includes('ready in')) {" +
 					"itemDesc.label = 'Total';" +
 				"}" +
+				"if (itemDesc.label.toLowerCase().includes('active')) {" +
+					"itemDesc.label = 'Cook';" +
+				"}" +
 				"itemDescList.push(itemDesc);" +
 			"}" +
 		"}" +
@@ -339,10 +342,10 @@ export default
 	"ingredients," +
 	"directions," +
 	"times: {" + 
-		"prepTime" +
-		"cookTime" +
+		"prepTime," +
+		"cookTime," +
 		"totalTime" +
-	"}"
+	"}" +
 "};" +
 
 "if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){ " +

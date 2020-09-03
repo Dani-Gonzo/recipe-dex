@@ -202,6 +202,9 @@ let itemDescList = [];
 				if (itemDesc.label.toLowerCase().includes('ready in')) {
 					itemDesc.label = "Total";
 				}
+				if (itemDesc.label.toLowerCase().includes('active')) {
+					itemDesc.label = 'Cook';
+				}
 				itemDescList.push(itemDesc);
 			}
 		}
