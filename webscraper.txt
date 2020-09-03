@@ -69,6 +69,7 @@ let name = '';
 // search for times container
 let prepTime = '';
 let cookTime = '';
+let totalTime = '';
 let itemDescList = [];
 {
 	const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
@@ -204,16 +205,17 @@ let itemDescList = [];
 				itemDescList.push(itemDesc);
 			}
 		}
-		
 
 		for (let time of itemDescList) {
 			if (time.label.toLowerCase().includes('prep')) {
 				prepTime = time.value;
 			} else if (time.label.toLowerCase().includes('cook')) {
 				cookTime = time.value;
-			} 
+			} else if (time.label.toLowerCase().includes('total')) {
+				totalTime = time.value;
+			}
 		}
-		console.log(JSON.stringify(itemDescList));
+		console.log(JSON.stringify({prepTime, cookTime, totalTime}));
 	}
 }
 
@@ -364,7 +366,12 @@ if( directionRoot.length > 0 ) {
 let recipeObject = {
 	name,
 	ingredients,
-	directions
+	directions,
+	times: {
+		prepTime,
+		cookTime,
+		totalTime
+	}
 };
 
 if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){ 

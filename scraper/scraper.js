@@ -41,6 +41,7 @@ export default
 // search for times container
 "let prepTime = '';" +
 "let cookTime = '';" +
+"let totalTime = '';" +
 "let itemDescList = [];" +
 "{" +
 	"const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);" +
@@ -168,8 +169,7 @@ export default
 			"if (itemTime.includes('min') || itemTime.includes('hour') || itemTime.includes('hr') || itemTime.endsWith('m')) {" +
 				"if (!timeRegex.test(itemTime)) {" +
 					"itemDesc.value = `${itemDesc.label} ${itemDesc.value}`;" +
-					// TODO: DO NOT assume the time is cook
-					"itemDesc.label = 'total';" +
+					"itemDesc.label = 'Total';" +
 				"}" +
 				"if (itemDesc.label.toLowerCase().includes('ready in')) {" +
 					"itemDesc.label = 'Total';" +
@@ -177,13 +177,14 @@ export default
 				"itemDescList.push(itemDesc);" +
 			"}" +
 		"}" +
-		
 
 		"for (let time of itemDescList) {" +
 			"if (time.label.toLowerCase().includes('prep')) {" +
 				"prepTime = time.value;" +
 			"} else if (time.label.toLowerCase().includes('cook')) {" +
 				"cookTime = time.value;" +
+			"} else if (time.label.toLowerCase().includes('total')) {" +
+				"totalTime = time.value;" +
 			"}" +
 		"}" +
 		"console.log(JSON.stringify(itemDescList));" +
@@ -337,7 +338,11 @@ export default
 	"name," +
 	"ingredients," +
 	"directions," +
-	"itemDescList" +
+	"times: {" + 
+		"prepTime" +
+		"cookTime" +
+		"totalTime" +
+	"}"
 "};" +
 
 "if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){ " +

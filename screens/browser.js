@@ -19,8 +19,9 @@ export default function Browser({navigation}) {
         webData = JSON.parse(webData);
         data = {
             name: webData.name,
-            prepTime: "webData.prepTime",
-            cookTime: "webData.cookTime",
+            prepTime: webData.times.prepTime,
+            cookTime: webData.times.cookTime,
+            totalTime: webData.times.totalTime,
             ingredients: webData.ingredients,
             directions: webData.directions
         }

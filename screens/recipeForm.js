@@ -78,6 +78,22 @@ export default function RecipeForm({navigation, route}) {
                                 defaultValue=""
                             />
 
+                            <Text style={styles.label}>Total Time</Text>
+                            <Controller 
+                                control={control}
+                                render={({onChange, onBlur, value}) => (
+                                    <TextInput 
+                                        style={styles.input}
+                                        placeholder="Total time"
+                                        onBlur={onBlur}
+                                        onChangeText={value => onChange(value)}
+                                        value={value}
+                                    />
+                                )}
+                                name="totalTime"
+                                defaultValue=""
+                            />
+
                             <Text style={styles.label}>Ingredients</Text>
                             <Controller 
                                 control={control}
