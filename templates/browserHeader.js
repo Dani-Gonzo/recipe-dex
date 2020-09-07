@@ -1,15 +1,52 @@
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, Text, View, TextInput} from 'react-native';
+import {MaterialIcons} from '@expo/vector-icons';
 
-export default function BrowserHeader({navigation, title, onDownload}) {
-    const openAddRecipe = () => {
-        navigation.navigate("RecipeForm");
+export default function BrowserHeader({navigation, title, onDownload, submitUrl, currentUrl}) {
+    const [url, setUrl] = useState("https://google.com");
+    const [cursorSelect, setCursorSelect] = useState({selection: {start: 0, end: 0}});
+    
+    let inputRef = null;
+
+    useEffect(() => {
+        setUrl(currentUrl);
+        SelectionChange();
+    }, [currentUrl]);
+
+    const openMenu = () => {
+        navigation.openDrawer();
     }
+
+    const onSubmit = () => {
+        if (url.includes(".com")) {
+            submitUrl(url);
+        } else {
+            const goto = `google.com/search?q=${url}`;
+            setUrl(goto);
+            console.log(goto);
+            submitUrl(goto);
+        }
+    }
+
+    const SelectionChange = () => inputRef.setNativeProps({
+        selection: {
+            start: 0,
+            end: 0
+        }
+    })
 
     return (
         <View style={styles.header}>
+            <MaterialIcons name="menu" size={28} onPress={openMenu} style={styles.icon} />
             <View style={styles.headerTitle}>
-                <Text style={styles.headerText}>{title}</Text>
+                <TextInput 
+                    ref={ref => (inputRef = ref)}
+                    style={{height: 40, borderColor: "gray", borderWidth: 1, width: "70%"}}
+                    onChangeText={(text) => setUrl(text)}
+                    onSubmitEditing={onSubmit}
+                    value={url}
+                    selection={cursorSelect}
+                />
             </View>
             <Text onPress={onDownload} style={styles.download}>Download</Text>
         </View>
@@ -29,6 +66,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#333",
         letterSpacing: 1
+    },
+    icon: {
+        position: "absolute",
+        left: 16
     },
     download: {
         position: "absolute",

@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, Alert} from 'react-native';
-import {MaterialIcons, AntDesign, Entypo} from '@expo/vector-icons';
+import {MaterialIcons, AntDesign} from '@expo/vector-icons';
 import Browser from '../screens/browser';
-// import * as WebBrowser from 'expo-web-browser';
 
 export default function Header({navigation, title}) {
     const openMenu = () => {
