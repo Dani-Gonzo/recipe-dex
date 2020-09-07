@@ -17,11 +17,14 @@ export default function BrowserHeader({navigation, title, onDownload, submitUrl,
         navigation.openDrawer();
     }
 
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
+
     const onSubmit = () => {
-        if (url.includes(".com")) {
+        if (urlRegex.test(url)) {
             submitUrl(url);
         } else {
-            const goto = `google.com/search?q=${url}`;
+            let encodedUrl = encodeURIComponent(url);
+            const goto = `google.com/search?q=${encodedUrl}`;
             setUrl(goto);
             console.log(goto);
             submitUrl(goto);
