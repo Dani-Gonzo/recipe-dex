@@ -9,7 +9,12 @@ import Browser from '../screens/browser';
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => (
-    <Drawer.Navigator initialRouteName="Home">
+    <Drawer.Navigator 
+        initialRouteName="Home" 
+        drawerStyle={{
+            backgroundColor: "#eee"
+        }}
+    >
         <Drawer.Screen name="Home" component={HomeNavigator} />
         <Drawer.Screen name="About" component={AboutNavigator} />
         <Drawer.Screen name="Browser" component={Browser} />

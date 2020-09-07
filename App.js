@@ -10,7 +10,7 @@ import { RecipeProvider } from './context/RecipeProvider';
 
 export default function App() {
   return (
-    <View style={globalStyles.container}>
+    <View style={styles.test}>
       <RecipeProvider>
         <DrawerNavigator />
       </RecipeProvider>
@@ -21,6 +21,7 @@ export default function App() {
 const styles = StyleSheet.create({
   test: {
     flex: 1,
-    backgroundColor: "red"
+    paddingTop: Expo.Constants.statusBarHeight,
+    backgroundColor: "#C0C0C0"
   }
 });

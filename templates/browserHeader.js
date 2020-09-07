@@ -44,25 +44,31 @@ export default function BrowserHeader({navigation, title, onDownload, submitUrl,
             <View style={styles.headerTitle}>
                 <TextInput 
                     ref={ref => (inputRef = ref)}
-                    style={{height: 40, borderColor: "gray", borderWidth: 1, width: "70%"}}
+                    style={styles.addressBar}
                     onChangeText={(text) => setUrl(text)}
                     onSubmitEditing={onSubmit}
                     value={url}
                     selection={cursorSelect}
                 />
             </View>
-            <Text onPress={onDownload} style={styles.download}>Download</Text>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    addressBar: {
+        height: 40,
+        borderColor: "gray",
+        borderWidth: 1,
+        width: "90%",
+        padding: 10
+    },
     header: {
         width: "100%",
-        height: 70,
+        height: 60,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "flex-end"
     },
     headerText: {
         fontWeight: "bold",
@@ -74,11 +80,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 16
     },
-    download: {
-        position: "absolute",
-        right: 16
-    },
     headerTitle: {
-        flexDirection: "row"
+        flexDirection: "row",
+        marginLeft: 20
     }
 });

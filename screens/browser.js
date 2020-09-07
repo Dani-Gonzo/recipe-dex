@@ -2,6 +2,7 @@ import React, {Component, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {WebView} from 'react-native-webview';
 import BrowserHeader from '../templates/browserHeader';
+import BrowserFooter from '../templates/browserFooter';
 const webScraper = require("../scraper/scraper").default;
 
 export default function Browser({navigation}) {
@@ -37,12 +38,13 @@ export default function Browser({navigation}) {
 
     return (
         <View style={styles.browserView}>
-            <BrowserHeader title="Browser" navigation={navigation} onDownload={scraper} submitUrl={submitUrl} currentUrl={url} />
+            <BrowserHeader title="Browser" navigation={navigation} submitUrl={submitUrl} currentUrl={url} />
             <WebView 
                 source={{uri: url}}
                 ref={ref => (webview = ref)}
                 onMessage={(event) => buildRecipe(event)}
-            />      
+            />   
+            <BrowserFooter onDownload={scraper} navigation={navigation} />   
         </View>
     );
 }
