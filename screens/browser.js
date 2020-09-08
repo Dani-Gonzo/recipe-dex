@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useRef} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {WebView} from 'react-native-webview';
 import BrowserHeader from '../templates/browserHeader';
@@ -7,12 +7,14 @@ const webScraper = require("../scraper/scraper").default;
 
 export default function Browser({navigation}) {
     const [url, setUrl] = useState("https://google.com");
+    const [canGoBack, setCanGoBack] = useState(false);
+    const [canGoForward, setCanGoForward] = useState(false);
 
-    webview = null;
+    const webviewRef = useRef(null);
 
     const scraper = () => {
         const recipeScraper = webScraper;
-        webview.injectJavaScript(recipeScraper);
+        webviewRef.current.injectJavaScript(recipeScraper);
     }
 
     const buildRecipe = (event) => {
@@ -36,15 +38,34 @@ export default function Browser({navigation}) {
         console.log(newUrl);
     }
 
+    const backButtonHandler = () => {
+        if (webviewRef.current) {
+            console.log("backPressed");
+            webviewRef.current.goBack();
+        }
+    }
+
+    const forwardButtonHandler = () => {
+        if (webviewRef.current) {
+            console.log("forwardPressed");
+            webviewRef.current.goForward();
+        }
+    }
+
     return (
         <View style={styles.browserView}>
             <BrowserHeader title="Browser" navigation={navigation} submitUrl={submitUrl} currentUrl={url} />
             <WebView 
                 source={{uri: url}}
-                ref={ref => (webview = ref)}
+                ref={webviewRef}
                 onMessage={(event) => buildRecipe(event)}
+                onNavigationStateChange={navState => {
+                    setCanGoBack(navState.canGoBack);
+                    setCanGoForward(navState.canGoForward);
+                    setUrl(navState.url);
+                }}
             />   
-            <BrowserFooter onDownload={scraper} navigation={navigation} />   
+            <BrowserFooter onDownload={scraper} navigation={navigation} backButtonHandler={backButtonHandler} forwardButtonHandler={forwardButtonHandler} />   
         </View>
     );
 }

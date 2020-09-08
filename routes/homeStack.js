@@ -18,7 +18,7 @@ export default HomeNavigator = ({navigation}) => (
         screenOptions={{
             headerStyle: {
                 backgroundColor: "#eee",
-                height: 80
+                height: 60
             },
             headerTintColor: "#444"
         }}

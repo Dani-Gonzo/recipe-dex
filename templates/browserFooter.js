@@ -2,16 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 
-export default function BrowserFooter({onDownload, navigation}) {
-    
-    const backHandler = () => {
-
-    }
+export default function BrowserFooter({onDownload, backButtonHandler, forwardButtonHandler}) {
 
     return (
         <View style={styles.footer}>
-            <Ionicons name="md-arrow-back" size={28} style={styles.backArrow} />
-            <Ionicons name="md-arrow-forward" size={28} style={styles.forwardArrow} />
+            <Ionicons name="md-arrow-back" size={28} style={styles.backArrow} onPress={backButtonHandler} />
+            <Ionicons name="md-arrow-forward" size={28} style={styles.forwardArrow} onPress={forwardButtonHandler} />
             <Text onPress={onDownload} style={styles.download}>Download</Text>
         </View>
     )
