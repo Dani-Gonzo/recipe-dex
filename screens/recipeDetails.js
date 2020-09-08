@@ -1,20 +1,21 @@
 import React, { useContext } from 'react';
-import {StyleSheet, View, Text, Image, Button} from 'react-native';
+import {StyleSheet, View, Text, Image, Button, ScrollView} from 'react-native';
 import Card from '../templates/card';
 import {globalStyles} from '../styles/global';
 import FlatButton from '../templates/button';
 import { RecipeContext } from '../context/RecipeProvider';
 
 export default function RecipeDetails({route, navigation}) {
-    const {name, prepTime, cookTime, ingredients, directions, key} = route.params;
+    const {name, prepTime, cookTime, totalTime, ingredients, directions, key} = route.params;
     const recipe = useContext(RecipeContext);
 
     return (
-        <View style={globalStyles.container}>
+        <ScrollView style={globalStyles.container}>
             <Card>
                 <Text style={styles.recipeTitle}>{name}</Text>
                 <Text>Prep Time: {prepTime}</Text>
                 <Text>Cook Time: {cookTime}</Text>
+                <Text>Total Time: {totalTime}</Text>
                 {ingredients.map((ingredient) => {
                     return (
                         <Text>{`\u2022 ` + ingredient}</Text>
@@ -33,7 +34,7 @@ export default function RecipeDetails({route, navigation}) {
                     navigation.navigate("Home");
                 }} />
             </Card>
-        </View>
+        </ScrollView>
     )
 }
 
