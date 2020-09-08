@@ -18,7 +18,12 @@ export default function RecipeForm({navigation, route}) {
 
     const { control, handleSubmit, errors } = useForm({ defaultValues: thisRecipe});
     const onSubmit = (data, e) => {
-        data.ingredients = data.ingredients.split(/, |\n|,/g);
+        // if ingredients has multiple lines...
+        if (data.ingredients.includes("\n")) {
+            data.ingredients = data.ingredients.split("\n");
+        } else {
+            data.ingredients = data.ingredients.split(/, |,/g);
+        }
         data.directions = data.directions.split(/\n/g);
         recipe.addRecipe(data, key);
         navigation.navigate("Home");
