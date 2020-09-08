@@ -1,38 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+import uuidv4 from 'uuid/v4';
 
 const RecipeContext = React.createContext();
 
 const RecipeProvider = (props) => {
-    const [recipes, setRecipes] = useState([
-        {
-            name: "Veggie Stir Fry",
-            prepTime: "30min",
-            cookTime: "30min",
-            ingredients: ["2 bell peppers", "1 onion"], 
-            directions: ["1. Mix shoyu, sherry, brown sugar, cornstarch, sriracha, and ginger. Set aside.", "2. Heat oil in a large skillet over medium-high heat."], 
-            key: "1"
-        },
-        {
-            name: "Curry",
-            prepTime: "1 hour",
-            cookTime: "30min",
-            ingredients: ["Chicken thigh", "1 bell pepper"], 
-            directions: ["1. Thinly slice the onions and fry them in 2tbsp of oil in a pot until translucid.", "2. Add the curry powder, 1tbsp of oil and the meat. Fry a little more."], 
-            key: "2"
+    const [recipes, setRecipes] = useState([]);
+
+    useEffect(() => {
+        getMultiData();
+    }, []);
+
+    const storeData = async (item) => {
+        try {
+            const jsonValue = JSON.stringify(item);
+            await AsyncStorage.setItem(`recipe_${item.key}`, jsonValue);
+            console.log(item.key);
+        } catch (e) {
+            console.log(e);
         }
-    ]);
+    }
+
+    const getMultiData = async () => {
+        let values;
+        let storageKeys;
+        try {
+            storageKeys = await AsyncStorage.getAllKeys();
+            values = await AsyncStorage.multiGet(storageKeys);
+            let storedValues = values.map(value => JSON.parse(value[1]));
+            setRecipes(storedValues);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const removeData = async (objectKey) => {
+        try {
+            await AsyncStorage.removeItem(`recipe_${objectKey}`);
+            // await AsyncStorage.clear();
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     const addRecipe = (recipe, key) => {
         if (key) {
             setRecipes((currentRecipes) => {
                 const recipeIndex = currentRecipes.findIndex((r) => r.key === key);
                 currentRecipes[recipeIndex] = {...currentRecipes[recipeIndex], ...recipe};
+                storeData(recipe);
                 return [...currentRecipes];
                 // Below does same as above
                 // return currentRecipes.map((r) => r.key == key ? {...r, ...recipe} : r);
             });
         } else {
-            recipe.key = (recipes.length + 1).toString();
+            recipe.key = uuidv4();
+            storeData(recipe);
             setRecipes((currentRecipes) => {
                 return [...currentRecipes, recipe]
             });
@@ -44,7 +67,8 @@ const RecipeProvider = (props) => {
             const recipeIndex = currentRecipes.findIndex((r) => r.key === key);
             currentRecipes.splice(recipeIndex, 1);
             return [...currentRecipes];
-        })
+        });
+        removeData(key);
     }
 
     const getRecipe = (key) => {
@@ -58,7 +82,8 @@ const RecipeProvider = (props) => {
                 recipes,
                 addRecipe,
                 removeRecipe,
-                getRecipe
+                getRecipe,
+                removeData
             }}
         >
             {props.children}
