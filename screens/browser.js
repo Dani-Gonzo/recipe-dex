@@ -35,19 +35,17 @@ export default function Browser({navigation}) {
     const submitUrl = (newUrl) => {
         newUrl = "https://" + newUrl
         setUrl(newUrl);
-        console.log(newUrl);
+        // console.log(newUrl);
     }
 
     const backButtonHandler = () => {
         if (webviewRef.current) {
-            console.log("backPressed");
             webviewRef.current.goBack();
         }
     }
 
     const forwardButtonHandler = () => {
         if (webviewRef.current) {
-            console.log("forwardPressed");
             webviewRef.current.goForward();
         }
     }
