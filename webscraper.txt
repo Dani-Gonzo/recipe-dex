@@ -26,7 +26,11 @@
 // containers: recipe, recipe-summary-item, content-wrapper, recipepart, recipe-details, recipeinfo, recipe-facts, preptime
 // ---------------------------
 
-
+if(/google\.com\/amp\/s\//.test(window.location.href)) {
+	window.location.href = 'https://' + window.location.href.match(/google\.com\/amp\/s\/(.+)\.amp$/)[1];
+	// window.ReactNativeWebView.postMessage(JSON.stringify({reloading:1}));
+	return;
+}
 // search for name container
 let name = '';
 {
@@ -274,7 +278,7 @@ if( ingreRoot.length > 0 ) {
 				const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();
 				let isMatch = className.includes('item');
 				isMatch = isMatch || className.includes('line');
-				isMatch = isMatch || ingredientRegExp.test(className);
+				isMatch = isMatch && ingredientRegExp.test(className);
 
 				if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {
 					candidateNodes.push(currentNode);
@@ -289,7 +293,7 @@ if( ingreRoot.length > 0 ) {
 			currentNode = itemWalker.currentNode;
 			while(currentNode) {
 				if(currentNode.length > 0) {
-					text += currentNode.data.toString().trim() + ' ';
+					text += currentNode.data.toString().trim().replace(/\s+/gm, ' ') + ' ';
 				}
 				currentNode = itemWalker.nextNode();
 			}

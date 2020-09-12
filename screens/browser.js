@@ -1,9 +1,11 @@
-import React, {Component, useState, useRef} from 'react';
+import React, {Component, useState, useRef, useCallback} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {WebView} from 'react-native-webview';
 import BrowserHeader from '../templates/browserHeader';
 import BrowserFooter from '../templates/browserFooter';
+import debounce from 'lodash.debounce';
 const webScraper = require("../scraper/scraper").default;
+let isReloading = false;
 
 export default function Browser({navigation}) {
     const [url, setUrl] = useState("https://google.com");
@@ -14,12 +16,17 @@ export default function Browser({navigation}) {
 
     const scraper = () => {
         const recipeScraper = webScraper;
+        console.log(recipeScraper);
         webviewRef.current.injectJavaScript(recipeScraper);
     }
 
     const buildRecipe = (event) => {
         webData = event.nativeEvent.data;
         webData = JSON.parse(webData);
+        if(webData.reloading == true) {
+            isReloading = true;
+            return;
+        }
         data = {
             name: webData.name,
             prepTime: webData.times.prepTime,
@@ -50,6 +57,30 @@ export default function Browser({navigation}) {
         }
     }
 
+	const debouncedNavigationChange = useCallback(
+		debounce(navState => {
+            console.log(`loading: ${navState.loading}`);
+            if(navState.loading) { return; }
+
+            setCanGoBack(navState.canGoBack);
+            setCanGoForward(navState.canGoForward);
+            const newUrl = navState.url;
+            // if(/google\.com\/amp\/s\//.test(navState.url)) {
+            //     newUrl = 'https://' + navState.url.match(/google\.com\/amp\/s\/(.+)\.amp$/)[1];
+            //     console.log(`Replaced Browser Url: ${newUrl}`);
+            // }
+            console.log(`New Browser Url: ${newUrl}`);
+            setUrl(newUrl);
+
+            console.log(`scrapeOnLoad is ${isReloading}`);
+            if(isReloading) {
+                isReloading = false;
+                scraper();
+            }
+            }, 250),
+		[], // will be created only once initially
+	);
+
     return (
         <View style={styles.browserView}>
             <BrowserHeader title="Browser" navigation={navigation} submitUrl={submitUrl} currentUrl={url} />
@@ -57,11 +88,7 @@ export default function Browser({navigation}) {
                 source={{uri: url}}
                 ref={webviewRef}
                 onMessage={(event) => buildRecipe(event)}
-                onNavigationStateChange={navState => {
-                    setCanGoBack(navState.canGoBack);
-                    setCanGoForward(navState.canGoForward);
-                    setUrl(navState.url);
-                }}
+                onNavigationStateChange={ debouncedNavigationChange }
             />   
             <BrowserFooter onDownload={scraper} navigation={navigation} backButtonHandler={backButtonHandler} forwardButtonHandler={forwardButtonHandler} />   
         </View>

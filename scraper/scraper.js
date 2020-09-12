@@ -1,4 +1,9 @@
 export default 
+"if(/google\\.com\\/amp\\/s\\//.test(window.location.href)) {" +
+	"window.location.href = 'https://' + window.location.href.match(/google\\.com\\/amp\\/s\\/(.+)\\.amp$/)[1];" +
+	"window.ReactNativeWebView.postMessage(JSON.stringify({reloading:true}));" +
+	// "" +
+"} else {" +
 "let name = '';" +
 "{" +
 	"let nameRoot = null;" +
@@ -246,7 +251,7 @@ export default
 				"const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();" +
 				"let isMatch = className.includes('item');" +
 				"isMatch = isMatch || className.includes('line');" +
-				"isMatch = isMatch || ingredientRegExp.test(className);" +
+				"isMatch = isMatch && ingredientRegExp.test(className);" +
 
 				"if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {" +
 					"candidateNodes.push(currentNode);" +
@@ -261,7 +266,7 @@ export default
 			"currentNode = itemWalker.currentNode;" +
 			"while(currentNode) {" +
 				"if(currentNode.length > 0) {" +
-					"text += currentNode.data.toString().trim() + ' ';" +
+					"text += currentNode.data.toString().trim().replace(/\\s+/gm, ' ') + ' ';" +
 				"}" +
 				"currentNode = itemWalker.nextNode();" +
 			"}" +
@@ -352,4 +357,4 @@ export default
 	"window.ReactNativeWebView = { postMessage: console.log };" +
 "}" +
 
-"window.ReactNativeWebView.postMessage(JSON.stringify(recipeObject));";
+"window.ReactNativeWebView.postMessage(JSON.stringify(recipeObject)); }";
