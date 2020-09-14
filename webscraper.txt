@@ -242,6 +242,7 @@ let ingreRoot = null;
 	}
 	// look for elements in certain order
 	ingreRoot = candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul');
+	ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('section') );
 	ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('body') );
 	ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('list') );
 	ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' );
@@ -262,6 +263,7 @@ let ingreRoot = null;
 	} else {
 		ingreRoot = [];
 	}
+	console.log(ingreRoot);
 }
 let ingredients = '';
 if( ingreRoot.length > 0 ) {
@@ -278,7 +280,7 @@ if( ingreRoot.length > 0 ) {
 				const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();
 				let isMatch = className.includes('item');
 				isMatch = isMatch || className.includes('line');
-				isMatch = isMatch && ingredientRegExp.test(className);
+				isMatch = isMatch || (ingredientRegExp.test(className) && !className.includes('section') && !className.includes('title') && !className.includes('lists') && !className.includes('group'));
 
 				if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {
 					candidateNodes.push(currentNode);
@@ -286,6 +288,8 @@ if( ingreRoot.length > 0 ) {
 			}
 			currentNode = walker.nextNode();
 		}
+
+		console.log(candidateNodes);
 		
 		for(let item of candidateNodes) {
 			let text = '';
@@ -301,6 +305,7 @@ if( ingreRoot.length > 0 ) {
 		}
 	}
 }
+console.log(ingredients);
 
 
 // search for directions container

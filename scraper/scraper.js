@@ -215,6 +215,7 @@ export default
 	"}" +
 	// look for elements in certain order
 	"ingreRoot = candidateNodes.find(e => e.nodeName.toLowerCase() == 'ul');" +
+	"ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('section') );" +
 	"ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('body') );" +
 	"ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' && e.className.toLowerCase().includes('list') );" +
 	"ingreRoot = ingreRoot || candidateNodes.find(e => e.nodeName.toLowerCase() == 'div' );" +
@@ -252,6 +253,7 @@ export default
 				"let isMatch = className.includes('item');" +
 				"isMatch = isMatch || className.includes('line');" +
 				"isMatch = isMatch && ingredientRegExp.test(className);" +
+				"isMatch = isMatch || (ingredientRegExp.test(className) && !className.includes('section') && !className.includes('title') && !className.includes('lists') && !className.includes('group'));" +
 
 				"if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {" +
 					"candidateNodes.push(currentNode);" +
