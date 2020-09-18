@@ -1,6 +1,14 @@
 export default 
+"function log(s) {" + 
+	"if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {" +
+		"window.ReactNativeWebView.postMessage(JSON.stringify({msg:s}));" +
+	"} else { console.log(s) }" +
+"};" +
+"try {" + 
+"log(`At: ${window.location.href}`);" +
 "if(/google\\.com\\/amp\\/s\\//.test(window.location.href)) {" +
-	"window.location.href = 'https://' + window.location.href.match(/google\\.com\\/amp\\/s\\/(.+)\\.amp$/)[1];" +
+	"window.location.href = 'https://' + window.location.href.match(/google\\.com\\/amp\\/s\\/(.+)$/)[1].replace('/amp/', '/').replace(/\\/amp|\\.amp$/, '');" +
+	"log(`Redirecting to: ${window.location.href}`);" +
 	"window.ReactNativeWebView.postMessage(JSON.stringify({reloading:true}));" +
 	// "" +
 "} else {" +
@@ -359,4 +367,5 @@ export default
 	"window.ReactNativeWebView = { postMessage: console.log };" +
 "}" +
 
-"window.ReactNativeWebView.postMessage(JSON.stringify(recipeObject)); }";
+"window.ReactNativeWebView.postMessage(JSON.stringify(recipeObject)); }" + 
+"} catch(e) { log(e); }";

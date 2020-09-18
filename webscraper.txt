@@ -26,11 +26,19 @@
 // containers: recipe, recipe-summary-item, content-wrapper, recipepart, recipe-details, recipeinfo, recipe-facts, preptime
 // ---------------------------
 
+function log(s) {
+	if (window.ReactNativeWebView && window.ReactNativeWebView.postMessage) {
+		window.ReactNativeWebView.postMessage(JSON.stringify({msg:s}));
+	} else { console.log(s) }
+};
+try {
+log(`At: ${window.location.href}`);
 if(/google\.com\/amp\/s\//.test(window.location.href)) {
-	window.location.href = 'https://' + window.location.href.match(/google\.com\/amp\/s\/(.+)\.amp$/)[1];
-	// window.ReactNativeWebView.postMessage(JSON.stringify({reloading:1}));
-	return;
-}
+	window.location.href = 'https://' + window.location.href.match(/google\.com\/amp\/s\/(.+)$/)[1].replace('/amp/', '/').replace(/\/amp|\.amp$/, '');
+	log(`Redirecting to: ${window.location.href}`);
+	window.ReactNativeWebView.postMessage(JSON.stringify({reloading:true}));
+	// ""
+} else {
 // search for name container
 let name = '';
 {
@@ -280,6 +288,7 @@ if( ingreRoot.length > 0 ) {
 				const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();
 				let isMatch = className.includes('item');
 				isMatch = isMatch || className.includes('line');
+				isMatch = isMatch && ingredientRegExp.test(className);
 				isMatch = isMatch || (ingredientRegExp.test(className) && !className.includes('section') && !className.includes('title') && !className.includes('lists') && !className.includes('group'));
 
 				if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {
@@ -390,4 +399,5 @@ if( !window.ReactNativeWebView || !window.ReactNativeWebView.postMessage){
 	window.ReactNativeWebView = { postMessage: console.log }; 
 }
 
-window.ReactNativeWebView.postMessage(JSON.stringify(recipeObject));
+window.ReactNativeWebView.postMessage(JSON.stringify(recipeObject)); }
+} catch(e) { log(e); }

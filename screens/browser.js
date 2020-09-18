@@ -16,13 +16,17 @@ export default function Browser({navigation}) {
 
     const scraper = () => {
         const recipeScraper = webScraper;
-        console.log(recipeScraper);
+        // console.log(recipeScraper);
         webviewRef.current.injectJavaScript(recipeScraper);
     }
 
     const buildRecipe = (event) => {
         webData = event.nativeEvent.data;
         webData = JSON.parse(webData);
+        if(webData.msg !== undefined) {
+            console.log(webData.msg);
+            return;
+        }
         if(webData.reloading == true) {
             isReloading = true;
             return;
