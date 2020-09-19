@@ -260,7 +260,6 @@ export default
 				"const className = (typeof(currentNode.className) == 'string' ? currentNode.className : '').toLowerCase();" +
 				"let isMatch = className.includes('item');" +
 				"isMatch = isMatch || className.includes('line');" +
-				"isMatch = isMatch && ingredientRegExp.test(className);" +
 				"isMatch = isMatch || (ingredientRegExp.test(className) && !className.includes('section') && !className.includes('title') && !className.includes('lists') && !className.includes('group'));" +
 
 				"if( isMatch && !candidateNodes.find(e => e.contains(currentNode)) ) {" +
