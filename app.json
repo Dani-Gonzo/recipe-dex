@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
-    "description": "Test",
+    "description": "A digital recipe storage solution. Add your own recipes manually, or download them from the internet and save them to your phone.\n\nCurrently known to work on these recipe sites:\n- allrecipes.com\n- foodnetwork.com\n- tasty.co\n- food.com\n- yummly.com\n- thepioneerwoman.com\n- epicurious.com\n- bettycrocker.com\n- eatingwell.com\n- delish.com",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
