@@ -11,28 +11,30 @@ export default function RecipeDetails({route, navigation}) {
 
     return (
         <ScrollView style={globalStyles.container}>
-            <Card>
+            <Card style={globalStyles.cardContent}>
                 <Text style={styles.recipeTitle}>{name}</Text>
-                <Text>Prep Time: {prepTime}</Text>
-                <Text>Cook Time: {cookTime}</Text>
-                <Text>Total Time: {totalTime}</Text>
-                {ingredients.map((ingredient) => {
-                    return (
-                        <Text>{`\u2022 ` + ingredient}</Text>
-                    )
-                })}
+                <View style={styles.timeContainer}>
+                    {prepTime ? <Text>Prep Time: {prepTime}</Text> : null}
+                    {cookTime ? <Text>Cook Time: {cookTime}</Text> : null}
+                    {totalTime ? <Text>Total Time: {totalTime}</Text> : null}
+                </View>
+                
                 <View style={styles.stepContainer}>
+                    <Text style={styles.subTitle}>Ingredients</Text>
+                    {ingredients.map((ingredient) => {
+                        return (
+                            <Text>{`\u2022 ` + ingredient}</Text>
+                        )
+                    })}
+                </View>
+                <View style={styles.stepContainer}>
+                    <Text style={styles.subTitle}>Directions</Text>
                     {directions.map((step) => {
                         return (
                             <Text style={styles.step}>{step}</Text>
                         )
                     })}
                 </View>
-                <FlatButton text="Edit" onPress={() => navigation.navigate("RecipeForm", {key})} />
-                <FlatButton text="Delete" onPress={() => {
-                    recipe.removeRecipe(key);
-                    navigation.navigate("Home");
-                }} />
             </Card>
         </ScrollView>
     )
@@ -41,12 +43,22 @@ export default function RecipeDetails({route, navigation}) {
 const styles = StyleSheet.create({
     recipeTitle: {
         fontWeight: "bold",
+        fontSize: 18,
         textAlign: "center"
+    },
+    subTitle: {
+        fontWeight: "bold",
+        fontSize: 14
     },
     stepContainer: {
         marginTop: 15
     },
     step: {
         marginTop: 5
+    },
+    timeContainer: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        flexWrap: "wrap"
     }
 });

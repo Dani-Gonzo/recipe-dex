@@ -8,6 +8,7 @@ import RecipeList from '../screens/recipeList';
 import RecipeDetails from '../screens/recipeDetails';
 import RecipeForm from '../screens/recipeForm';
 import Header from '../templates/header';
+import DetailsHeader from '../templates/detailsHeader';
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,7 @@ export default HomeNavigator = ({navigation}) => (
             name="RecipeDetails"
             component={RecipeDetails}
             options={{
-                title: "Recipe Details"
+                header: (props) => <DetailsHeader recipeParams={props.scene.route.params} title="Recipe Details" />
             }}
         />
         <Stack.Screen 

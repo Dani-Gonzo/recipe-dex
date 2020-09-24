@@ -4,5 +4,8 @@ export const globalStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#555"
+    },
+    cardContent: {
+        fontSize: 20
     }
 });

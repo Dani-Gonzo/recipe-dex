@@ -36,8 +36,8 @@ export default function Browser({navigation}) {
             prepTime: webData.times.prepTime,
             cookTime: webData.times.cookTime,
             totalTime: webData.times.totalTime,
-            ingredients: webData.ingredients,
-            directions: webData.directions
+            ingredients: webData.ingredients.trim(),
+            directions: webData.directions.trim()
         }
         console.log(event.nativeEvent.data);
         navigation.navigate("RecipeForm", {download: data});

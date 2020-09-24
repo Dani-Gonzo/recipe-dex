@@ -25,6 +25,7 @@ export default function RecipeForm({navigation, route}) {
             data.ingredients = data.ingredients.split(/, |,/g);
         }
         data.directions = data.directions.split(/\n/g);
+        
         recipe.addRecipe(data, key);
         navigation.navigate("Home");
     }
