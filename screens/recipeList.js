@@ -14,7 +14,7 @@ export default function RecipeList({navigation}) {
                 renderItem={({item}) => (
                     <TouchableOpacity onPress={() => navigation.navigate("RecipeDetails", item)}>
                         <Card>
-                            <Text>{item.name}</Text>
+                            <Text style={styles.cardTitle}>{item.name}</Text>
                         </Card>
                     </TouchableOpacity>
                 )}
@@ -22,3 +22,11 @@ export default function RecipeList({navigation}) {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    cardTitle: {
+        fontSize: 18,
+        fontWeight: "600",
+        color: "#f2f2f2"
+    }
+});

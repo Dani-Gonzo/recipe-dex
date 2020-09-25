@@ -4,6 +4,7 @@ import {useForm, Controller} from 'react-hook-form';
 import {globalStyles} from '../styles/global';
 import FlatButton from '../templates/button';
 import { RecipeContext } from '../context/RecipeProvider';
+import {CustomText} from '../customs/customText';
 
 export default function RecipeForm({navigation, route}) {
     const {key, download} = route.params || {};
@@ -123,7 +124,7 @@ export default function RecipeForm({navigation, route}) {
                                 render={({onChange, onBlur, value}) => (
                                     <TextInput
                                         multiline
-                                        style={styles.input}
+                                        style={[styles.input, styles.multilineInput]}
                                         placeholder="Directions"
                                         onBlur={onBlur}
                                         onChangeText={value => onChange(value)}
@@ -133,7 +134,7 @@ export default function RecipeForm({navigation, route}) {
                                 name="directions"
                                 defaultValue=""
                             />
-                            <FlatButton text="Submit" onPress={handleSubmit(onSubmit)} />
+                            <FlatButton text="Save" onPress={handleSubmit(onSubmit)} />
                         </View>
                     </View>
                 </ScrollView>
@@ -147,12 +148,14 @@ const styles = StyleSheet.create({
         color: 'white',
         marginLeft: 0,
         marginTop: 20,
-        marginBottom: 5
+        marginBottom: 5,
+        fontSize: 16
     },
     input: {
         backgroundColor: 'white',
         padding: 5,
         borderRadius: 4,
+        fontSize: 14
     },
     container: {
         flex: 1,
@@ -161,6 +164,9 @@ const styles = StyleSheet.create({
     },
     content: {
         width: "90%"
+    },
+    multilineInput: {
+        height: 40,
     }
 });
   

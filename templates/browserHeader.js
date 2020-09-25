@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {MaterialIcons} from '@expo/vector-icons';
+import {globalStyles} from '../styles/global';
 
 export default function BrowserHeader({navigation, title, onDownload, submitUrl, currentUrl}) {
     const [url, setUrl] = useState("https://google.com");
@@ -39,7 +40,7 @@ export default function BrowserHeader({navigation, title, onDownload, submitUrl,
     })
 
     return (
-        <View style={styles.header}>
+        <View style={[styles.header, globalStyles.headerFooterColor]}>
             <MaterialIcons name="menu" size={28} onPress={openMenu} style={styles.icon} />
             <View style={styles.headerTitle}>
                 <TextInput 
@@ -61,14 +62,15 @@ const styles = StyleSheet.create({
         borderColor: "gray",
         borderWidth: 1,
         width: "90%",
-        padding: 10
+        padding: 10,
+        backgroundColor: "lightgray"
     },
     header: {
         width: "100%",
         height: 60,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "flex-end"
+        justifyContent: "flex-end",
     },
     headerText: {
         fontWeight: "bold",
@@ -78,7 +80,8 @@ const styles = StyleSheet.create({
     },
     icon: {
         position: "absolute",
-        left: 16
+        left: 16,
+        color: "lightgray"
     },
     headerTitle: {
         flexDirection: "row",

@@ -22,6 +22,6 @@ const styles = StyleSheet.create({
   test: {
     flex: 1,
     paddingTop: Expo.Constants.statusBarHeight,
-    backgroundColor: "#C0C0C0"
+    backgroundColor: "#616161"
   }
 });

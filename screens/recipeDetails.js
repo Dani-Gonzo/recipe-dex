@@ -4,6 +4,7 @@ import Card from '../templates/card';
 import {globalStyles} from '../styles/global';
 import FlatButton from '../templates/button';
 import { RecipeContext } from '../context/RecipeProvider';
+import {CustomText} from '../customs/customText';
 
 export default function RecipeDetails({route, navigation}) {
     const {name, prepTime, cookTime, totalTime, ingredients, directions, key} = route.params;
@@ -11,19 +12,19 @@ export default function RecipeDetails({route, navigation}) {
 
     return (
         <ScrollView style={globalStyles.container}>
-            <Card style={globalStyles.cardContent}>
+            <Card>
                 <Text style={styles.recipeTitle}>{name}</Text>
                 <View style={styles.timeContainer}>
-                    {prepTime ? <Text>Prep Time: {prepTime}</Text> : null}
-                    {cookTime ? <Text>Cook Time: {cookTime}</Text> : null}
-                    {totalTime ? <Text>Total Time: {totalTime}</Text> : null}
+                    {prepTime ? <CustomText>Prep Time: {prepTime}</CustomText> : null}
+                    {cookTime ? <CustomText>Cook Time: {cookTime}</CustomText> : null}
+                    {totalTime ? <CustomText>Total Time: {totalTime}</CustomText> : null}
                 </View>
                 
                 <View style={styles.stepContainer}>
                     <Text style={styles.subTitle}>Ingredients</Text>
                     {ingredients.map((ingredient) => {
                         return (
-                            <Text>{`\u2022 ` + ingredient}</Text>
+                            <CustomText>{`\u2022 ` + ingredient}</CustomText>
                         )
                     })}
                 </View>
@@ -31,7 +32,7 @@ export default function RecipeDetails({route, navigation}) {
                     <Text style={styles.subTitle}>Directions</Text>
                     {directions.map((step) => {
                         return (
-                            <Text style={styles.step}>{step}</Text>
+                            <CustomText style={styles.step}>{step}</CustomText>
                         )
                     })}
                 </View>
@@ -44,11 +45,13 @@ const styles = StyleSheet.create({
     recipeTitle: {
         fontWeight: "bold",
         fontSize: 18,
-        textAlign: "center"
+        textAlign: "center",
+        color: "lightgray"
     },
     subTitle: {
         fontWeight: "bold",
-        fontSize: 14
+        fontSize: 16,
+        color: "lightgray"
     },
     stepContainer: {
         marginTop: 15

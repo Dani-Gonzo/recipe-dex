@@ -12,7 +12,13 @@ const DrawerNavigator = () => (
     <Drawer.Navigator 
         initialRouteName="Home" 
         drawerStyle={{
-            backgroundColor: "#eee"
+            backgroundColor: "#555"
+        }}
+        drawerContentOptions={{
+            labelStyle: {
+                color: "#f2f2f2",
+                fontSize: 16
+            }
         }}
     >
         <Drawer.Screen name="Home" component={HomeNavigator} />

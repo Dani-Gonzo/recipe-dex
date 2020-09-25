@@ -18,10 +18,13 @@ export default HomeNavigator = ({navigation}) => (
         headerMode="screen"
         screenOptions={{
             headerStyle: {
-                backgroundColor: "#eee",
-                height: 60
+                backgroundColor: "#555",
+                height: 60,
             },
-            headerTintColor: "#444"
+            headerTintColor: "lightgray",
+            // headerTitleStyle: {
+            //     color: "lightgray"
+            // }
         }}
         >
         <Stack.Screen 

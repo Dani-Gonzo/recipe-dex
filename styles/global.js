@@ -3,9 +3,9 @@ import {StyleSheet} from 'react-native';
 export const globalStyles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#555"
+        backgroundColor: "#4a4a4a"
     },
-    cardContent: {
-        fontSize: 20
+    headerFooterColor: {
+        backgroundColor: "#555"
     }
 });
