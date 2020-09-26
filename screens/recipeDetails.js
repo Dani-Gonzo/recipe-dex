@@ -13,7 +13,7 @@ export default function RecipeDetails({route, navigation}) {
     return (
         <ScrollView style={globalStyles.container}>
             <Card>
-                <Text style={styles.recipeTitle}>{name}</Text>
+                <CustomText style={styles.recipeTitle}>{name}</CustomText>
                 <View style={styles.timeContainer}>
                     {prepTime ? <CustomText>Prep Time: {prepTime}</CustomText> : null}
                     {cookTime ? <CustomText>Cook Time: {cookTime}</CustomText> : null}
@@ -21,7 +21,7 @@ export default function RecipeDetails({route, navigation}) {
                 </View>
                 
                 <View style={styles.stepContainer}>
-                    <Text style={styles.subTitle}>Ingredients</Text>
+                    <CustomText style={styles.subTitle}>Ingredients</CustomText>
                     {ingredients.map((ingredient) => {
                         return (
                             <CustomText>{`\u2022 ` + ingredient}</CustomText>
@@ -29,7 +29,7 @@ export default function RecipeDetails({route, navigation}) {
                     })}
                 </View>
                 <View style={styles.stepContainer}>
-                    <Text style={styles.subTitle}>Directions</Text>
+                    <CustomText style={styles.subTitle}>Directions</CustomText>
                     {directions.map((step) => {
                         return (
                             <CustomText style={styles.step}>{step}</CustomText>
@@ -46,12 +46,12 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18,
         textAlign: "center",
-        color: "lightgray"
+        // color: "lightgray"
     },
     subTitle: {
         fontWeight: "bold",
-        fontSize: 16,
-        color: "lightgray"
+        // fontSize: 16,
+        // color: "lightgray"
     },
     stepContainer: {
         marginTop: 15

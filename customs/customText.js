@@ -8,7 +8,7 @@ export class CustomText extends React.Component {
 
     render() {
         return (
-            <Text style={styles.defaultStyle}>
+            <Text style={[styles.defaultStyle, this.props.style]}>
                 {this.props.children}
             </Text>
         );
