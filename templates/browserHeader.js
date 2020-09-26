@@ -73,9 +73,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
     },
     icon: {
-        // position: "absolute",
         left: 16,
-        // color: "lightgray"
     },
     headerTitle: {
         flexDirection: "row",

@@ -46,12 +46,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18,
         textAlign: "center",
-        // color: "lightgray"
     },
     subTitle: {
         fontWeight: "bold",
-        // fontSize: 16,
-        // color: "lightgray"
     },
     stepContainer: {
         marginTop: 15

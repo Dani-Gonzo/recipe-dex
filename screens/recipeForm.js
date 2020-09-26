@@ -145,11 +145,9 @@ export default function RecipeForm({navigation, route}) {
 
 const styles = StyleSheet.create({
     label: {
-        // color: 'white',
         marginLeft: 0,
         marginTop: 20,
         marginBottom: 5,
-        // fontSize: 16
     },
     input: {
         backgroundColor: '#F9F9F9',

@@ -24,18 +24,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     backArrow: {
-        // position: "absolute",
         left: 16,
-        // color: "lightgray"
     },
     forwardArrow: {
-        // position: "absolute",
         left: 70,
-        // color: "lightgray"
     },
     download: {
         position: "absolute",
         right: 16,
-        // color: "lightgray"
     }
 });

@@ -36,23 +36,14 @@ const styles = StyleSheet.create({
     headerText: {
         fontWeight: "bold",
         fontSize: 20,
-        // color: "lightgray",
         letterSpacing: 1
     },
     icon: {
-        // position: "absolute",
         left: 16,
-        // color: "lightgray"
     },
     addIcon: {
-        // position: "absolute",
         right: 16,
-        // color: "lightgray"
     },
-    // browserIcon: {
-    //     position: "absolute",
-    //     right: 50
-    // },
     headerTitle: {
         flexDirection: "row"
     }

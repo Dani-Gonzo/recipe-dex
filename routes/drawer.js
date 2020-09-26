@@ -16,7 +16,7 @@ const DrawerNavigator = () => (
         }}
         drawerContentOptions={{
             labelStyle: {
-                color: "#f2f2f2",
+                color: "lightgray",
                 fontSize: 16
             }
         }}

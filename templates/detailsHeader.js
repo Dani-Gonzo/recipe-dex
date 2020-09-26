@@ -38,26 +38,18 @@ const styles = StyleSheet.create({
     headerText: {
         fontWeight: "bold",
         fontSize: 20,
-        color: "#333",
         letterSpacing: 1,
-        // color: "lightgray"
     },
     deleteIcon: {
-        // position: "absolute",
         right: 16,
-        // color: "lightgray"
     },
     editIcon: {
-        // position: "absolute",
         right: 50,
-        // color: "lightgray"
     },
     headerTitle: {
         flexDirection: "row"
     },
     backArrow: {
-        // position: "absolute",
         left: 16,
-        // color: "lightgray"
     }
 });
