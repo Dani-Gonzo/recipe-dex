@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, FlatList, TouchableOpacity, Button } from 'react
 import Card from '../templates/card';
 import {globalStyles} from '../styles/global';
 import { RecipeContext } from '../context/RecipeProvider';
+import {CustomText} from '../customs/customText';
 
 export default function RecipeList({navigation}) {
     const recipe = useContext(RecipeContext);
@@ -14,7 +15,7 @@ export default function RecipeList({navigation}) {
                 renderItem={({item}) => (
                     <TouchableOpacity onPress={() => navigation.navigate("RecipeDetails", item)}>
                         <Card>
-                            <Text style={styles.cardTitle}>{item.name}</Text>
+                            <CustomText style={styles.cardTitle}>{item.name}</CustomText>
                         </Card>
                     </TouchableOpacity>
                 )}
@@ -27,6 +28,6 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: 18,
         fontWeight: "600",
-        color: "#f2f2f2"
+        // color: "#f2f2f2"
     }
 });

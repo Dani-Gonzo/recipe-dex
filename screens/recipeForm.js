@@ -37,7 +37,7 @@ export default function RecipeForm({navigation, route}) {
                 <ScrollView>
                     <View style={styles.container}>
                         <View style={styles.content}>
-                            <Text style={styles.label}>Recipe Name</Text>
+                            <CustomText style={styles.label}>Recipe Name</CustomText>
                             <Controller 
                                 control={control}
                                 render={({onChange, onBlur, value}) => (
@@ -53,7 +53,7 @@ export default function RecipeForm({navigation, route}) {
                                 defaultValue=""
                             />
 
-                            <Text style={styles.label}>Prep Time</Text>
+                            <CustomText style={styles.label}>Prep Time</CustomText>
                             <Controller 
                                 control={control}
                                 render={({onChange, onBlur, value}) => (
@@ -69,7 +69,7 @@ export default function RecipeForm({navigation, route}) {
                                 defaultValue=""
                             />
 
-                            <Text style={styles.label}>Cook Time</Text>
+                            <CustomText style={styles.label}>Cook Time</CustomText>
                             <Controller 
                                 control={control}
                                 render={({onChange, onBlur, value}) => (
@@ -85,7 +85,7 @@ export default function RecipeForm({navigation, route}) {
                                 defaultValue=""
                             />
 
-                            <Text style={styles.label}>Total Time</Text>
+                            <CustomText style={styles.label}>Total Time</CustomText>
                             <Controller 
                                 control={control}
                                 render={({onChange, onBlur, value}) => (
@@ -101,7 +101,7 @@ export default function RecipeForm({navigation, route}) {
                                 defaultValue=""
                             />
 
-                            <Text style={styles.label}>Ingredients</Text>
+                            <CustomText style={styles.label}>Ingredients</CustomText>
                             <Controller 
                                 control={control}
                                 render={({onChange, onBlur, value}) => (
@@ -118,7 +118,7 @@ export default function RecipeForm({navigation, route}) {
                                 defaultValue=""
                             />
 
-                            <Text style={styles.label}>Directions</Text>
+                            <CustomText style={styles.label}>Directions</CustomText>
                             <Controller 
                                 control={control}
                                 render={({onChange, onBlur, value}) => (
@@ -145,14 +145,14 @@ export default function RecipeForm({navigation, route}) {
 
 const styles = StyleSheet.create({
     label: {
-        color: 'white',
+        // color: 'white',
         marginLeft: 0,
         marginTop: 20,
         marginBottom: 5,
-        fontSize: 16
+        // fontSize: 16
     },
     input: {
-        backgroundColor: 'white',
+        backgroundColor: '#F9F9F9',
         padding: 5,
         borderRadius: 4,
         fontSize: 14

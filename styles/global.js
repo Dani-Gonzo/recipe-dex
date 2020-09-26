@@ -7,5 +7,9 @@ export const globalStyles = StyleSheet.create({
     },
     headerFooterColor: {
         backgroundColor: "#555"
+    },
+    iconStyles: {
+        position: "absolute",
+        color: "lightgray"
     }
 });

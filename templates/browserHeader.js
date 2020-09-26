@@ -41,7 +41,7 @@ export default function BrowserHeader({navigation, title, onDownload, submitUrl,
 
     return (
         <View style={[styles.header, globalStyles.headerFooterColor]}>
-            <MaterialIcons name="menu" size={28} onPress={openMenu} style={styles.icon} />
+            <MaterialIcons name="menu" size={28} onPress={openMenu} style={[styles.icon, globalStyles.iconStyles]} />
             <View style={styles.headerTitle}>
                 <TextInput 
                     ref={ref => (inputRef = ref)}
@@ -72,16 +72,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-end",
     },
-    headerText: {
-        fontWeight: "bold",
-        fontSize: 20,
-        color: "#333",
-        letterSpacing: 1
-    },
     icon: {
-        position: "absolute",
+        // position: "absolute",
         left: 16,
-        color: "lightgray"
+        // color: "lightgray"
     },
     headerTitle: {
         flexDirection: "row",

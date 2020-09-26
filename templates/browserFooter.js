@@ -2,14 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {globalStyles} from '../styles/global';
+import {CustomText} from '../customs/customText';
 
 export default function BrowserFooter({onDownload, backButtonHandler, forwardButtonHandler}) {
 
     return (
         <View style={[styles.footer, globalStyles.headerFooterColor]}>
-            <Ionicons name="md-arrow-back" size={28} style={styles.backArrow} onPress={backButtonHandler} />
-            <Ionicons name="md-arrow-forward" size={28} style={styles.forwardArrow} onPress={forwardButtonHandler} />
-            <Text onPress={onDownload} style={styles.download}>Download</Text>
+            <Ionicons name="md-arrow-back" size={28} style={[styles.backArrow, globalStyles.iconStyles]} onPress={backButtonHandler} />
+            <Ionicons name="md-arrow-forward" size={28} style={[styles.forwardArrow, globalStyles.iconStyles]} onPress={forwardButtonHandler} />
+            <CustomText onPress={onDownload} style={styles.download}>Download</CustomText>
         </View>
     )
 }
@@ -23,18 +24,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     backArrow: {
-        position: "absolute",
+        // position: "absolute",
         left: 16,
-        color: "lightgray"
+        // color: "lightgray"
     },
     forwardArrow: {
-        position: "absolute",
+        // position: "absolute",
         left: 70,
-        color: "lightgray"
+        // color: "lightgray"
     },
     download: {
         position: "absolute",
         right: 16,
-        color: "lightgray"
+        // color: "lightgray"
     }
 });
