@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import {StyleSheet, View, Text, Image, Button, ScrollView} from 'react-native';
 import Card from '../templates/card';
 import {globalStyles} from '../styles/global';
-import FlatButton from '../templates/button';
 import { RecipeContext } from '../context/RecipeProvider';
 import {CustomText} from '../customs/customText';
 
