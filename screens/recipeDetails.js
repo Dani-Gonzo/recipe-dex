@@ -11,7 +11,7 @@ export default function RecipeDetails({route, navigation}) {
 
     return (
         <ScrollView style={globalStyles.container}>
-            <Card>
+            <Card style={styles.cardContainer}>
                 <CustomText style={styles.recipeTitle}>{name}</CustomText>
                 <View style={styles.timeContainer}>
                     {prepTime ? <CustomText>Prep Time: {prepTime}</CustomText> : null}
@@ -59,5 +59,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-evenly",
         flexWrap: "wrap"
+    },
+    cardContainer: {
+        borderBottomWidth: 0
     }
 });

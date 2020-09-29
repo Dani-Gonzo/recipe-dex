@@ -6,25 +6,24 @@ import { RecipeContext } from '../context/RecipeProvider';
 import { useNavigation } from '@react-navigation/native';
 import {globalStyles} from '../styles/global';
 import {CustomText} from '../customs/customText';
-import { FontAwesome } from '@expo/vector-icons'; 
 
-export default function DetailsHeader({title, recipeParams}) {
-    const {key, ingredients} = recipeParams;
-    const recipe = useContext(RecipeContext);
-    const navigation = useNavigation();
+export default function IngredientGroceryListHeader({title, navigation, recipeParams}) {
+    // const {key} = recipeParams;
+    // const recipe = useContext(RecipeContext);
+    // const navigation = useNavigation();
+
+    const saveIngredientsToGrocery = () => {
+        
+    }
 
     return (
         <View style={[styles.header, globalStyles.headerFooterColor]}>
             <Ionicons name="md-arrow-back" size={28} style={[styles.backArrow, globalStyles.iconStyles]} onPress={() => navigation.goBack()} />
+            <CustomText style={styles.headerText}>{title}</CustomText>
             {/* <View style={styles.headerTitle}>
                 <CustomText style={styles.headerText}>{title}</CustomText>
             </View> */}
-            <FontAwesome name="shopping-basket" size={22} style={[styles.groceryIcon, globalStyles.iconStyles]} onPress={() => navigation.navigate("IngredientGroceryList", {ingredients})} />
-            <MaterialIcons name="edit" size={28} style={[styles.editIcon, globalStyles.iconStyles]} onPress={() => navigation.navigate("RecipeForm", {key})} />
-            <Ionicons name="md-trash" size={28} style={[styles.deleteIcon, globalStyles.iconStyles]} onPress={ async () => {
-                navigation.navigate("Home");
-                await recipe.removeRecipe(key);
-            }} />
+            <CustomText style={styles.rightAlignSave}>SAVE</CustomText>
         </View>
     );
 }
@@ -42,17 +41,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         letterSpacing: 1,
     },
-    deleteIcon: {
-        right: 20,
-    },
-    editIcon: {
-        right: 60,
-    },
-    groceryIcon: {
-        right: 110
-    },
     headerTitle: {
         flexDirection: "row"
+    },
+    rightAlignSave: {
+        position: "absolute",
+        right: 16
     },
     backArrow: {
         left: 16,

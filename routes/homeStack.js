@@ -9,6 +9,8 @@ import RecipeDetails from '../screens/recipeDetails';
 import RecipeForm from '../screens/recipeForm';
 import Header from '../templates/header';
 import DetailsHeader from '../templates/detailsHeader';
+import IngredientGroceryList from '../screens/ingredientGroceryList';
+import IngredientGroceryListHeader from '../screens/ingredientGroceryListHeader';
 
 const Stack = createStackNavigator();
 
@@ -38,7 +40,14 @@ export default HomeNavigator = ({navigation}) => (
             name="RecipeDetails"
             component={RecipeDetails}
             options={{
-                header: (props) => <DetailsHeader recipeParams={props.scene.route.params} title="Recipe Details" />
+                header: (props) => <DetailsHeader recipeParams={props.scene.route.params} />
+            }}
+        />
+        <Stack.Screen 
+            name="IngredientGroceryList"
+            component={IngredientGroceryList}
+            options={{
+                header: () => <IngredientGroceryListHeader title="Choose Ingredients" navigation={navigation} />
             }}
         />
         <Stack.Screen 

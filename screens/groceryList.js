@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     },
     groceryCard: {
         // marginHorizontal: 16,
-        marginVertical: 16,
+        // marginVertical: 12,
         flexDirection: "row",
         // justifyContent: "flex-start",
         alignItems: "center"
