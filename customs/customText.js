@@ -7,8 +7,12 @@ export class CustomText extends React.Component {
     }
 
     render() {
+        const childProps = {
+            ...this.props,
+            style: [styles.defaultStyle, this.props.style],
+        }
         return (
-            <Text style={[styles.defaultStyle, this.props.style]}>
+            <Text {...childProps}>
                 {this.props.children}
             </Text>
         );
