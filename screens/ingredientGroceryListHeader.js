@@ -13,7 +13,9 @@ export default function IngredientGroceryListHeader({title, navigation, recipePa
     // const navigation = useNavigation();
 
     const saveIngredientsToGrocery = () => {
-        
+        navigation.goBack();
+        // TODO: Actually save ingredients to grocerylist component
+        // TODO: Pop up alert notifying user ingredients have been saved to grocery list
     }
 
     return (
@@ -23,7 +25,7 @@ export default function IngredientGroceryListHeader({title, navigation, recipePa
             {/* <View style={styles.headerTitle}>
                 <CustomText style={styles.headerText}>{title}</CustomText>
             </View> */}
-            <CustomText style={styles.rightAlignSave}>SAVE</CustomText>
+            <CustomText style={styles.rightAlignSave} onPress={saveIngredientsToGrocery}>SAVE</CustomText>
         </View>
     );
 }
